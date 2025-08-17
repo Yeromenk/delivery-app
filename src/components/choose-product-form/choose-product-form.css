@@ -1,0 +1,80 @@
+.choose-pizza-form {
+    display: flex;
+    flex: 1;
+    gap: 40px;
+    width: 100%;
+}
+
+.choose-pizza-image {
+    position: relative;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 10;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    width: 350px;
+    height: 350px;
+}
+
+.choose-pizza {
+    flex: 1;
+    background: #FCFCFC;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+}
+
+.choose-pizza h1 {
+    font-size: 2rem;
+    margin: 0 0 15px 0;
+    color: #1f2937;
+    font-weight: bold;
+}
+
+.choose-pizza-btn {
+    height: 60px;
+    padding: 18px 30px;
+    border-radius: 12px;
+    width: 100%;
+    background-color: #F97316;
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.choose-pizza-btn:hover:not(:disabled) {
+    background-color: #ea580c;
+}
+
+.choose-pizza-btn:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff50;
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,114 @@
+.productCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+    height: 260px; /* Increased height for better proportion */
+    box-shadow: 0 4px 12px -8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.productCard::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #FE5F1E 0%, #FF8C4B 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.productCard:hover::after {
+    opacity: 1;
+}
+
+.product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.productCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.2);
+}
+
+.productCard-h2 {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.productCard-p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.product-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.product-price span {
+    font-weight: 600;
+    color: #FE5F1E;
+    font-size: 16px;
+}
+
+/* Button styling improvements */
+.ingredients-show-all-btn,
+.productCard-btn {
+    padding: 10px 16px;
+    background-color: #FE5F1E;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px -4px rgba(254, 95, 30, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.ingredients-show-all-btn:hover,
+.productCard-btn:hover {
+    background-color: #e54d16;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px -4px rgba(254, 95, 30, 0.5);
+}
+
+.ingredients-show-all-btn:active,
+.productCard-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px -2px rgba(254, 95, 30, 0.5);
+}
+
+/* Disabled button state */
+.ingredients-show-all-btn:disabled,
+.productCard-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

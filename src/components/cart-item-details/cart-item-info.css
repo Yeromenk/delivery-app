@@ -1,0 +1,24 @@
+/* src/components/cart-item-details/cart-item-info.css */
+.cart-item-details-container {
+    /* Corresponds to the outer div */
+}
+
+.cart-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-item-title {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 700; /* font-bold */
+    flex: 1;
+    line-height: 1.5; /* leading-6 */
+    margin: 0;
+}
+
+.cart-item-description {
+    font-size: 0.75rem; /* text-xs */
+    color: #a0aec0; /* text-gray-400 */
+    margin: 0;
+}

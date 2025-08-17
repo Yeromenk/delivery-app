@@ -1,0 +1,88 @@
+.choose-pizza-form {
+    display: flex;
+    flex: 1;
+    gap: 40px;
+    width: 100%;
+}
+
+.choose-pizza {
+    flex: 1;
+    background: #FCFCFC;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    min-height: 400px;
+}
+
+.choose-pizza h1 {
+    font-size: 2.2rem;
+    margin: 0 0 20px 0;
+    color: #1f2937;
+    font-weight: bold;
+}
+
+.choose-pizza p {
+    color: #6b7280;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.variants-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.ingredients {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 6px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.ingredients::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.ingredients-section {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.choose-pizza-btn {
+    height: 60px;
+    padding: 18px 30px;
+    border-radius: 12px;
+    width: 100%;
+    background-color: #F97316;
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.choose-pizza-btn:hover {
+    background-color: #ea580c;
+}

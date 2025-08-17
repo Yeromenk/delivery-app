@@ -1,0 +1,15 @@
+/* src/components/count-button/count-button.css */
+.count-button-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px; /* Corresponds to gap-3 */
+}
+
+.count-value-sm {
+    font-size: 0.875rem; /* Corresponds to text-sm */
+}
+
+.count-value-lg {
+    font-size: 1rem; /* Corresponds to text-md (assuming md is 1rem) */
+}

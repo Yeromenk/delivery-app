@@ -1,0 +1,92 @@
+/* Update Main.css */
+.main {
+    display: flex;
+    flex-direction: column; /* Change to column to stack elements */
+    width: 100%;
+    padding: 0;
+}
+
+.categories-section {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    left: 0;
+    right: 0;
+}
+
+.categories-content {
+    max-width: 1280px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.main-container {
+    max-width: 1280px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.content-container {
+    display: flex;
+    gap: 4rem;
+}
+
+.filtration {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.products {
+    flex-grow: 1;
+}
+
+/* Updated styles for product groups */
+.productCard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.productCard-list > div {
+    margin-bottom: 1.5rem;
+}
+
+.productCard-list h2 {
+    font-size: 24px;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    color: #2C2C2C;
+    border-bottom: 2px solid #f9f9f9;
+    padding-bottom: 0.75rem;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Ensure 3 items per row on larger screens */
+@media (min-width: 992px) {
+    .items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .filtration {
+        width: 100%;
+    }
+}

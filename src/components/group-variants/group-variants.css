@@ -1,0 +1,35 @@
+.group-variants {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FCFCFC;
+    border-radius: 1.5rem;
+    padding: 1rem 0.25rem 0.25rem;
+    user-select: none;
+}
+
+.group-variants-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 30px;
+    padding: 0 1.25rem;
+    flex: 1 1 0;
+    border-radius: 1.5rem;
+    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border: none;
+    background: transparent;
+}
+
+.group-variants-item.active {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.group-variants-item.disabled {
+    color: #6b7280;
+    opacity: 0.5;
+    pointer-events: none;
+}

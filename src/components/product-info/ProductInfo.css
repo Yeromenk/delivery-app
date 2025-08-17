@@ -1,0 +1,28 @@
+.product-info {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.product-info__image {
+    display: flex;
+    flex: 1;
+}
+
+.product-info__info-text {
+    width: 490px;
+    background: #FCFCFC;
+    padding: 1rem;
+}
+
+.product-info__info-text h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.product-info__info-text p {
+    font-size: 1rem;
+    color: #9CA3AF;
+    margin-top: 0.5rem;
+}
