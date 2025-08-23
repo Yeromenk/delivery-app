@@ -130,5 +130,72 @@ router.get('/products/:id', async (req, res) => {
     }
 });
 
+// Get all categories with products, ingredients, and items
+router.get('/categories', async (req, res) => {
+    try {
+        const client = await pool.connect();
+
+        const result = await client.query(`
+            SELECT 
+                c.id,
+                c.name,
+                COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'id', p.id,
+                            'name', p.name,
+                            'imageUrl', p."imageUrl",
+                            'categoryId', p."categoryId",
+                            'ingredients', p_ingredients.ingredients,
+                            'items', p_items.items
+                        )
+                    ) FILTER (WHERE p.id IS NOT NULL),
+                    '[]'
+                ) as products
+            FROM "Category" c
+            LEFT JOIN "Product" p ON c.id = p."categoryId"
+            LEFT JOIN LATERAL (
+                SELECT COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'id', i.id,
+                            'name', i.name,
+                            'price', i.price,
+                            'imageUrl', i."imageUrl"
+                        )
+                    ) FILTER (WHERE i.id IS NOT NULL),
+                    '[]'
+                ) as ingredients
+                FROM "_IngredientToProduct" itp
+                LEFT JOIN "Ingredient" i ON itp."A" = i.id
+                WHERE itp."B" = p.id
+            ) p_ingredients ON true
+            LEFT JOIN LATERAL (
+                SELECT COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'id', pi.id,
+                            'price', pi.price,
+                            'size', pi.size,
+                            'pizzaType', pi."pizzaType"
+                        )
+                    ) FILTER (WHERE pi.id IS NOT NULL),
+                    '[]'
+                ) as items
+                FROM "ProductItem" pi
+                WHERE pi."productId" = p.id
+            ) p_items ON true
+            GROUP BY c.id, c.name
+            ORDER BY c.id
+        `);
+
+        client.release();
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).json({ error: 'Failed to fetch categories' });
+    }
+});
+
 
 export default router;

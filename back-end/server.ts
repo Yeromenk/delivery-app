@@ -4,6 +4,7 @@ import pool from './database/db';
 import ingredientsRoutes from './routes/ingredients';
 import productsRoutes from './routes/products';
 import cartRoutes from './routes/cart';
+import searchRoutes from './routes/search';
 
 
 const app = express();
@@ -30,6 +31,7 @@ async function checkDatabaseConnection() {
 app.use('/api', ingredientsRoutes);
 app.use('/api', productsRoutes);
 app.use('/api', cartRoutes);
+app.use('/api/search', searchRoutes);
 
 
 async function startServer() {

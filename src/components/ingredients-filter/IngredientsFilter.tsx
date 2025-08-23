@@ -28,7 +28,7 @@ const IngredientsFilter: React.FC<IngredientsFilterProps> = ({
                                                                  loading = false,
                                                                  selectedIds,
                                                                  name,
-                                                                 showToggle = false, // По умолчанию скрыта
+                                                                 showToggle = false,
                                                              }) => {
     const [showAll, setShowAll] = useState(false);
     const [searchValue, setSearchValue] = useState('');

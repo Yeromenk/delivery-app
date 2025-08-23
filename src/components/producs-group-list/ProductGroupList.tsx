@@ -42,7 +42,7 @@ export const ProductGroupList: React.FC<Props> = ({
                                                       onProductClick
                                                   }) => {
     const setActiveId = useCategoryStore((state) => state.setActiveId);
-    const intersectionRef = useRef<HTMLDivElement>(null);
+    const intersectionRef = useRef<HTMLDivElement | null>(null);
     const intersection = useIntersection(intersectionRef, {
         threshold: 0.4,
     })
@@ -54,7 +54,7 @@ export const ProductGroupList: React.FC<Props> = ({
     }, [categoryId, intersection?.isIntersecting, title, setActiveId]);
 
     return (
-        <div ref={intersectionRef} id={title.toLowerCase()}>
+        <div ref={intersectionRef} id={title.toLowerCase().replace(/\s+/g, '-')}>
             <h2>
                 {title}
             </h2>

@@ -68,27 +68,40 @@ const ChooseProductModal: React.FC<Props> = ({product, onClose}) => {
         }
     }
 
+    const handleOverlayClick = (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) {
+            onClose?.();
+        }
+    };
+
     return (
-        <div className="choose-product-modal">
-            <div className="modal-body">
-                {isPizzaForm ? (
-                    <ChoosePizzaForm
-                        imageUrl={product.imageUrl}
-                        name={product.name}
-                        ingredients={product.ingredients}
-                        items={product.items}
-                        onClickButton={onAddPizza}
-                        loading={loading}
-                    />
-                ) : (
-                    <ChooseProductForm
-                        imageUrl={product.imageUrl}
-                        name={product.name}
-                        price={firstItem.price}
-                        onClickAdd={onAddProduct}
-                        loading={loading}
-                    />
-                )}
+        <div className="modal-overlay" onClick={handleOverlayClick}>
+            <div className="modal-content">
+                <button className="modal-close" onClick={onClose}>
+                    ×
+                </button>
+                <div className="choose-product-modal">
+                    <div className="modal-body">
+                        {isPizzaForm ? (
+                            <ChoosePizzaForm
+                                imageUrl={product.imageUrl}
+                                name={product.name}
+                                ingredients={product.ingredients}
+                                items={product.items}
+                                onClickButton={onAddPizza}
+                                loading={loading}
+                            />
+                        ) : (
+                            <ChooseProductForm
+                                imageUrl={product.imageUrl}
+                                name={product.name}
+                                price={firstItem.price}
+                                onClickAdd={onAddProduct}
+                                loading={loading}
+                            />
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

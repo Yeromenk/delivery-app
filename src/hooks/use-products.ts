@@ -1,77 +1,98 @@
 import {useEffect, useState} from "react";
+import {findPizzas, type GetSearchParams} from "../lib/find-pizzas.ts";
 
-interface Ingredient {
+export interface Ingredient {
     id: number;
     name: string;
     price: number;
     imageUrl: string;
 }
 
-interface ProductItem {
+export interface ProductItem {
     id: number;
     price: number;
     size?: number;
     pizzaType?: number;
 }
 
-interface Product {
+export interface Product {
     id: number;
     name: string;
     imageUrl: string;
     categoryId: number;
     ingredients: Ingredient[];
     items: ProductItem[];
-    price: number;
+}
+
+interface Category {
+    id: number;
+    name: string;
+    products: Product[];
 }
 
 interface GroupedProducts {
     [categoryId: number]: Product[];
 }
 
-export const useProducts = () => {
+export const useProducts = (filters?: GetSearchParams) => {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<Product[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProducts>({});
+    const [categories, setCategories] = useState<{[id: number]: string}>({});
 
     useEffect(() => {
         async function getProducts() {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:5000/api/products');
-                const data = await response.json();
 
-                const products: Product[] = data.map((product: any) => ({
-                    id: product.id,
-                    name: product.name,
-                    imageUrl: product.imageUrl,
-                    categoryId: product.categoryId,
-                    ingredients: product.ingredients || [],
-                    items: product.items || [],
-                    price: product.items?.[0]?.price || 150
-                }));
+                const hasActiveFilters = filters && Object.values(filters).some(value =>
+                    value !== undefined && value !== '' && value !== '0' && value !== '1000'
+                );
 
-                setItems(products);
+                let categoriesData: Category[] = [];
 
-                const grouped = products.reduce((acc, product) => {
-                    if (!acc[product.categoryId]) {
-                        acc[product.categoryId] = [];
+                if (hasActiveFilters) {
+                    categoriesData = await findPizzas(filters);
+                } else {
+                    const response = await fetch('http://localhost:5000/api/categories');
+                    if (response.ok) {
+                        categoriesData = await response.json();
+                    } else {
+                        throw new Error('Failed to fetch categories');
                     }
-                    acc[product.categoryId].push(product);
-                    return acc;
-                }, {} as GroupedProducts);
+                }
 
+                const categoryNames: {[id: number]: string} = {};
+                let allProducts: Product[] = [];
+                let grouped: GroupedProducts = {};
+
+                if (Array.isArray(categoriesData) && categoriesData.length > 0) {
+                    categoriesData.forEach(category => {
+                        if (category?.id && category?.name) {
+                            categoryNames[category.id] = category.name;
+                            if (category.products && Array.isArray(category.products)) {
+                                grouped[category.id] = category.products;
+                                allProducts.push(...category.products);
+                            }
+                        }
+                    });
+                }
+
+                setItems(allProducts);
                 setGroupedProducts(grouped);
+                setCategories(categoryNames);
             } catch (error) {
                 console.error('Error fetching products:', error);
                 setItems([]);
                 setGroupedProducts({});
+                setCategories({});
             } finally {
                 setLoading(false);
             }
         }
 
         getProducts();
-    }, []);
+    }, [filters]);
 
-    return { items, groupedProducts, loading };
+    return { items, groupedProducts, loading, categories };
 };
