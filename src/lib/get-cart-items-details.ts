@@ -1,12 +1,10 @@
 import { mapPizzaType, type PizzaSize, type PizzaType } from '../assets/constants/pizza.ts';
 import type {CartStateItem} from "./get-cart-details.ts";
 
-export type IngredientInfo = { name: string; price?: number };
-
 export const getCartItemsDetails = (
-    pizzaType: PizzaType ,
-    pizzaSize: PizzaSize ,
-    ingredients: CartStateItem["ingredients"]
+    ingredients: CartStateItem["ingredients"],
+    pizzaType?: PizzaType ,
+    pizzaSize?: PizzaSize
 ): string => {
     const details: string[] = [];
 

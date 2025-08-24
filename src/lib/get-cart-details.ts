@@ -10,6 +10,7 @@ export type CartStateItem = {
     pizzaSize?: number | null;
     pizzaType?: number | null;
     ingredients?: Array<{ name: string; price: number }>;
+    disabled?: boolean;
 }
 
 interface ReturnProps {

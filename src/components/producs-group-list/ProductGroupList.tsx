@@ -2,6 +2,7 @@ import ProductCard from "../product-card/ProductCard.tsx";
 import React, {useEffect, useRef} from "react";
 import {useIntersection} from "react-use";
 import {useCategoryStore} from "../../store/category.ts";
+import { Skeleton } from 'primereact/skeleton';
 
 interface Ingredient {
     id: number;
@@ -32,6 +33,7 @@ interface Props {
     categoryId: number;
     listClassName?: string;
     onProductClick?: (product: Product) => void;
+    loading?: boolean;
 }
 
 export const ProductGroupList: React.FC<Props> = ({
@@ -39,10 +41,11 @@ export const ProductGroupList: React.FC<Props> = ({
                                                       items,
                                                       categoryId,
                                                       listClassName,
-                                                      onProductClick
+                                                      onProductClick,
+                                                      loading = false
                                                   }) => {
     const setActiveId = useCategoryStore((state) => state.setActiveId);
-    const intersectionRef = useRef<HTMLDivElement | null>(null);
+    const intersectionRef = useRef<HTMLDivElement>(null);
     const intersection = useIntersection(intersectionRef, {
         threshold: 0.4,
     })
@@ -53,11 +56,24 @@ export const ProductGroupList: React.FC<Props> = ({
         }
     }, [categoryId, intersection?.isIntersecting, title, setActiveId]);
 
+    if (loading) {
+        return (
+            <div ref={intersectionRef} id={title?.toLowerCase().replace(/\s+/g, '-') || `category-${categoryId}`}>
+                <h2>{title}</h2>
+                <div className={`items ${listClassName || ""}`} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem' }}>
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div key={index} style={{ background: 'white', borderRadius: '12px', padding: '1rem', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'}}>
+                            <Skeleton width="100%" height="200px" borderRadius="8px" className="mb-3" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div ref={intersectionRef} id={title.toLowerCase().replace(/\s+/g, '-')}>
-            <h2>
-                {title}
-            </h2>
+        <div ref={intersectionRef} id={title?.toLowerCase().replace(/\s+/g, '-') || `category-${categoryId}`}>
+            <h2>{title}</h2>
 
             <div className={`items ${listClassName || ""}`}>
                 {items.map((item) => (
@@ -67,6 +83,8 @@ export const ProductGroupList: React.FC<Props> = ({
                         name={item.name}
                         price={item.items[0]?.price || 0}
                         imageUrl={item.imageUrl}
+                        loading={loading}
+                        ingredients={item.ingredients || []}
                         onClick={() => onProductClick?.(item)}
                     />
                 ))}

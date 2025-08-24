@@ -1,7 +1,7 @@
 import FilterCheckBox from "../filter-checkbox/FilterCheckBox.tsx";
 import React, {useState} from "react";
 import './IngredientsFilter.css'
-import Skeleton from "../skeleton/Skeleton.tsx";
+import { Skeleton } from 'primereact/skeleton';
 
 type Item = FilterCheckBox;
 
@@ -45,7 +45,14 @@ const IngredientsFilter: React.FC<IngredientsFilterProps> = ({
         return (
             <div className="ingredients-filter-container">
                 <p>{title}</p>
-                <Skeleton count={limit}/>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {Array.from({ length: limit }).map((_, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <Skeleton width="1.25rem" height="1.25rem" borderRadius="4px" />
+                            <Skeleton width="100%" height="1rem" />
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }

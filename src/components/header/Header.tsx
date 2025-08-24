@@ -1,11 +1,17 @@
 import './Header.css'
-import { User} from "lucide-react";
+import {User} from "lucide-react";
 import {Link} from "react-router-dom";
 import SearchInput from "../search-input/Search";
 import logo from "../../assets/images/logo.png";
 import CartButton from "../cart-button/cart-button.tsx";
+import React from "react";
 
-const Header = () => {
+interface IProps {
+    hasSearch?: boolean;
+    hasCart?: boolean;
+}
+
+const Header: React.FC<IProps> = ({hasSearch = true, hasCart = true}) => {
     return (
         <header className="header">
             <div className="container">
@@ -26,9 +32,11 @@ const Header = () => {
                 </div>
 
                 {/*Search*/}
-                <div className="search-header">
-                    <SearchInput/>
-                </div>
+                {hasSearch && (
+                    <div className="search-header">
+                        <SearchInput/>
+                    </div>
+                )}
 
 
                 {/*Right part*/}
@@ -38,7 +46,9 @@ const Header = () => {
                         Sign in
                     </button>
 
-                    <CartButton/>
+                    {hasCart && (
+                            <CartButton/>
+                        )}
                 </div>
             </div>
         </header>

@@ -63,8 +63,8 @@ export const useProducts = (filters?: GetSearchParams) => {
                 }
 
                 const categoryNames: {[id: number]: string} = {};
-                let allProducts: Product[] = [];
-                let grouped: GroupedProducts = {};
+                const allProducts: Product[] = [];
+                const grouped: GroupedProducts = {};
 
                 if (Array.isArray(categoriesData) && categoriesData.length > 0) {
                     categoriesData.forEach(category => {

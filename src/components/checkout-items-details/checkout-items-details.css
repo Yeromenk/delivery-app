@@ -1,0 +1,26 @@
+.checkout-items-content {
+    display: flex;
+    margin: 16px 0;
+}
+
+.checkout-items-content > span:first-child {
+    display: flex;
+    flex: 1;
+    font-size: 18px;
+    font-weight: 500;
+    color: #737373;
+}
+
+.checkout-items-content > span:last-child {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
+
+.checkout-items-dots {
+    flex: 1;
+    border-bottom: 1px dashed #e5e5e5;
+    position: relative;
+    top: -4px;
+    margin: 0 8px;
+}

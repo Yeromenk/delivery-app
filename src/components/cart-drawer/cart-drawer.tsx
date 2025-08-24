@@ -1,11 +1,12 @@
-import React, {useState, type MouseEvent, type ReactElement, useEffect, useCallback} from 'react';
+import React, {useState, type MouseEvent, type ReactElement, useCallback} from 'react';
 import {Link} from 'react-router-dom';
-import {ArrowRight, X} from 'lucide-react';
+import {ArrowLeft, ArrowRight, X} from 'lucide-react';
 import './cart-drawer.css';
 import CartDrawerItem from '../cart-drawer-item/cart-drawer-item.tsx';
 import {getCartItemsDetails} from '../../lib/get-cart-items-details.ts';
 import {type PizzaSize, type PizzaType} from '../../assets/constants/pizza.ts';
-import {useCartStore} from "../../store/cart.ts";
+import useCart from "../../hooks/use-cart.ts";
+import { Skeleton } from 'primereact/skeleton';
 
 type TriggerProps = {
     onClick?: (e: MouseEvent) => void;
@@ -17,6 +18,7 @@ interface Props {
 
 const CartDrawer: React.FC<Props> = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     const toggleDrawer = useCallback(() => setIsOpen((v) => !v), []);
 
@@ -27,36 +29,12 @@ const CartDrawer: React.FC<Props> = ({children}) => {
         },
     });
 
-    const {totalAmount, items: cartItems, fetchCartItems, loading, updateItemQuantity, removeCartItem} = useCartStore();
-
-    useEffect(() => {
-        fetchCartItems();
-    }, []); // Убрал fetchCartItems из зависимостей
-
-    // Функция для безопасного приведения типов
-    const getPizzaTypeAndSize = useCallback((item: typeof cartItems[0]) => {
-        const pizzaType = item.pizzaType;
-        const pizzaSize = item.pizzaSize;
-
-        if (pizzaType && pizzaSize &&
-            (pizzaType === 1 || pizzaType === 2)) {
-            return {
-                type: pizzaType as PizzaType,
-                size: pizzaSize as PizzaSize
-            };
-        }
-        return null;
-    }, []);
-
-    if (loading && cartItems.length === 0) {
-        return null; // Или показать loader
-    }
+    const {totalAmount, items, removeCartItem, updateItemQuantity, loading} = useCart();
 
     const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
-       const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
-
-       updateItemQuantity(id, newQuantity)
-    }
+        const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+        updateItemQuantity(id, newQuantity);
+    };
 
     return (
         <>
@@ -65,54 +43,88 @@ const CartDrawer: React.FC<Props> = ({children}) => {
             <div className={`cart-drawer ${isOpen ? 'open' : ''}`}>
                 <div className="cart-drawer-header">
                     <h2 className="cart-drawer-title">
-                        In cart <span className="font-bold">{cartItems.length} items</span>
+                        In cart <span className="font-bold">{items.length} items</span>
                     </h2>
                     <button onClick={toggleDrawer} className="cart-drawer-close">
                         <X size={24}/>
                     </button>
                 </div>
 
-                <div className="cart-drawer-body">
-                    {cartItems.map((item) => {
-                        const pizzaInfo = getPizzaTypeAndSize(item);
-
-                        return (
-                            <CartDrawerItem
-                                key={item.id}
-                                id={item.id}
-                                imageUrl={item.imageUrl}
-                                details={
-                                    pizzaInfo
-                                        ? getCartItemsDetails(
-                                            pizzaInfo.type,
-                                            pizzaInfo.size,
-                                            item.ingredients || []
-                                        )
-                                        : ''
-                                }
-                                name={item.name}
-                                price={item.price}
-                                quantity={item.quantity}
-                                onClickUpdateQuantity={(type) => onClickCountButton(item.id, item.quantity, type)}
-                                onClickRemove={() => removeCartItem(item.id)}
+                <div className={`cart-drawer-content ${!totalAmount ? 'empty-state' : ''}`}>
+                    {loading ? (
+                        <div className="cart-drawer-body">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderBottom: '1px solid #f0f0f0' }}>
+                                    <Skeleton width="400px" height="60px" borderRadius="8px" />
+                                </div>
+                            ))}
+                        </div>
+                    ) : !totalAmount ? (
+                        <div className="cart-drawer-empty">
+                            <img
+                                src="../../../public/images/empty-box.png"
+                                width={120}
+                                height={120}
+                                alt="Empty cart"
+                                className="empty-cart-image"
                             />
-                        );
-                    })}
+                            <h3 className="empty-cart-title">Your cart is empty</h3>
+                            <p className="empty-cart-text">Add at least one pizza to make a purchase</p>
+                            <button className="continue-shopping-btn" onClick={toggleDrawer}>
+                                <ArrowLeft className="w-5 mr-2"/>
+                                Continue shopping
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="cart-drawer-body">
+                            {items.map((item) => (
+                                <div className="cart-drawer-body-item" key={item.id}>
+                                    <CartDrawerItem
+                                        id={item.id}
+                                        imageUrl={item.imageUrl}
+                                        details={
+                                            item.pizzaSize && item.pizzaType ?
+                                                getCartItemsDetails(
+                                                    item.ingredients,
+                                                    item.pizzaType as PizzaType,
+                                                    item.pizzaSize as PizzaSize,
+                                                ) : ''
+                                        }
+                                        name={item.name}
+                                        disabled={item.disabled}
+                                        price={item.price}
+                                        quantity={item.quantity}
+                                        onClickUpdateQuantity={(type) => onClickCountButton(item.id, item.quantity, type)}
+                                        onClickRemove={() => removeCartItem(item.id)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
-                <div className="cart-drawer-footer">
-                    <div className="cart-total">
-                        <span className="cart-total-label">Total</span>
-                        <div className="cart-total-divider"/>
-                        <span className="cart-total-amount">{totalAmount} CZK</span>
+                {totalAmount > 0 && !loading && (
+                    <div className="cart-drawer-footer">
+                        <div className="cart-total">
+                            <span className="cart-total-label">Total</span>
+                            <div className="cart-total-divider"/>
+                            <span className="cart-total-amount">{totalAmount} CZK</span>
+                        </div>
+                        <Link to="/checkout" className="checkout-link">
+                            <button
+                                className={`checkout-button ${redirect ? 'loading' : ''}`}
+                                onClick={() => {
+                                    setRedirect(true);
+                                    setIsOpen(false);
+                                }}
+                                disabled={redirect}
+                            >
+                                {redirect ? 'Loading...' : 'Checkout'}
+                                <ArrowRight className="w-5 ml-2"/>
+                            </button>
+                        </Link>
                     </div>
-                    <Link to="/checkout" className="checkout-link">
-                        <button className="checkout-button" onClick={() => setIsOpen(false)}>
-                            Checkout
-                            <ArrowRight className="w-5 ml-2"/>
-                        </button>
-                    </Link>
-                </div>
+                )}
             </div>
         </>
     );

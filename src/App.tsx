@@ -1,10 +1,11 @@
 import Header from './components/header/Header.tsx'
 import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom'
-import Main from "./pages/Main.tsx"
+import Main from "./pages/main/Main.tsx"
 import NotFound from "./components/not-found-page/NotFound.tsx"
 import ErrorBoundary from "./components/error-boundary/ErrorBoundary.tsx";
 import ProductInfo from "./components/product-info/ProductInfo.tsx";
 import { useParams } from 'react-router-dom';
+import CheckoutPage from "./pages/checkout/checkout-page.tsx";
 
 const App = () => {
     return (
@@ -21,7 +22,6 @@ const Layout = () => {
     )
 }
 
-// Компонент-обертка для ProductInfo
 const ProductPage = () => {
     const { id } = useParams<{ id: string }>();
 
@@ -58,6 +58,11 @@ const router = createBrowserRouter([
                 <NotFound/>
             </>
         )
+    } ,
+    {
+        path: '/checkout',
+        element: <CheckoutPage />,
+        errorElement: <ErrorBoundary><CheckoutPage /></ErrorBoundary>
     }
 ])
 

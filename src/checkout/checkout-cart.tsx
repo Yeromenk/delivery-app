@@ -1,0 +1,62 @@
+import React from 'react';
+import type {CartStateItem} from "../lib/get-cart-details.ts";
+import CartItem from "../components/cart-item/cart-item.tsx";
+import type {PizzaSize, PizzaType} from "../assets/constants/pizza.ts";
+import {getCartItemsDetails} from "../lib/get-cart-items-details.ts";
+import { Skeleton } from 'primereact/skeleton';
+
+interface Props {
+    items: CartStateItem[];
+    onClickCountButton: (id: number, quantity: number, type: 'plus' | 'minus') => void;
+    removeCartItem: (id: number) => void;
+    loading?: boolean;
+}
+
+const CheckoutCart: React.FC<Props> = ({items, removeCartItem, onClickCountButton, loading = false}) => {
+    return (
+        <div className="white-block">
+            <div className="checkout-content">
+                <h1>1. Cart</h1>
+
+                {loading ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', border: '1px solid #f0f0f0', borderRadius: '0.5rem' }}>
+                                <Skeleton width="60px" height="60px" borderRadius="8px" />
+                                <div style={{ flex: 1 }}>
+                                    <Skeleton width="70%" height="1.25rem" className="mb-2" />
+                                    <Skeleton width="90%" height="1rem" />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
+                                    <Skeleton width="80px" height="1.25rem" />
+                                    <Skeleton width="100px" height="32px" borderRadius="4px" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    items.map((item) => (
+                        <CartItem
+                            id={item.id}
+                            key={item.id}
+                            name={item.name}
+                            details={getCartItemsDetails(
+                                item.ingredients,
+                                item.pizzaType as PizzaType,
+                                item.pizzaSize as PizzaSize,
+                            )}
+                            price={item.price}
+                            imageUrl={item.imageUrl}
+                            quantity={item.quantity}
+                            disabled={item.disabled}
+                            onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                            onClickRemove={() => removeCartItem(item.id)}
+                        />
+                    ))
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default CheckoutCart;
