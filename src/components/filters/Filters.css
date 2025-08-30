@@ -1,21 +1,25 @@
 h2 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    color: #2c2c2c;
 }
 
 .filter {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .price {
     margin-top: 1rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 1rem;
 }
 
 .price p {
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 0.5rem;
+    color: #374151;
 }
 
 .input-price {
@@ -25,13 +29,15 @@ h2 {
 }
 
 .price input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
+    background-color: #f9f9f9;
 }
 
 .price input:focus {
     outline: none;
     border-color: #FE5F1E;
+    box-shadow: 0 0 0 3px rgba(254, 95, 30, 0.15);
+    background-color: #fff;
 }
-

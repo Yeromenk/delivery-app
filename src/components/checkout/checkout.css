@@ -82,8 +82,8 @@
 .white-block {
     background-color: #fff;
     border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     width: 100%;
 }
 
@@ -99,6 +99,37 @@
 .white-block span {
     font-size: 28px;
     font-weight: bold;
+}
+
+/* Checkout cart skeletons */
+.checkout-cart-skeleton-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkout-cart-skeleton-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.checkout-cart-skeleton-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkout-cart-skeleton-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
 }
 
 .form-row {

@@ -2,10 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    background: #fff;
+    padding: 24px;
+    background: #fff6ed;
     border-radius: 16px;
-    height: 260px; /* Increased height for better proportion */
+    height: 260px;
     box-shadow: 0 4px 12px -8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
@@ -29,45 +29,48 @@
 }
 
 .product-img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 215px;
+    height: 215px;
     object-fit: contain;
 }
 
-.productCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.2);
-}
 
 .productCard-h2 {
-    margin-top: 15px;
-    margin-bottom: 8px;
+    margin-top: 12px;
+    margin-bottom: 4px;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     color: #333;
 }
 
 .productCard-p {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 12px;
+    color: #9CA3AF;
+    margin-bottom: 0;
     line-height: 1.4;
 }
 
-.product-price {
+.productCard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-top: auto;
+    padding-top: 16px;
 }
 
-.product-price span {
-    font-weight: 600;
-    color: #FE5F1E;
-    font-size: 16px;
+.product-price-text {
+    font-size: 20px;
 }
 
-/* Button styling improvements */
+.product-price-text b {
+    font-weight: 700;
+}
+
 .ingredients-show-all-btn,
 .productCard-btn {
     padding: 10px 16px;
@@ -86,12 +89,6 @@
     gap: 8px;
 }
 
-.ingredients-show-all-btn:hover,
-.productCard-btn:hover {
-    background-color: #e54d16;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px -4px rgba(254, 95, 30, 0.5);
-}
 
 .ingredients-show-all-btn:active,
 .productCard-btn:active {
@@ -99,7 +96,6 @@
     box-shadow: 0 2px 4px -2px rgba(254, 95, 30, 0.5);
 }
 
-/* Disabled button state */
 .ingredients-show-all-btn:disabled,
 .productCard-btn:disabled {
     background-color: #ccc;

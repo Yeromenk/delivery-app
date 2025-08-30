@@ -7,28 +7,31 @@ export interface CountButtonProps {
     size?: 'sm' | 'lg';
     className?: string;
     onClick?: (type: 'plus' | 'minus') => void;
+    loading?: boolean;
 }
 
 export const CountButton: React.FC<CountButtonProps> = ({
-                                                            className,
-                                                            onClick,
-                                                            value = 1,
-                                                            size = 'sm',
-                                                        }) => {
+    className,
+    onClick,
+    value = 1,
+    size = 'sm',
+    loading,
+}) => {
     const valueSizeClass = size === 'sm' ? 'count-value-sm' : 'count-value-lg';
 
     return (
         <div className={`count-button-container ${className || ''}`}>
             <CountIconButton
                 onClick={() => onClick?.('minus')}
-                disabled={value === 1}
+                disabled={value === 1 || loading}
                 size={size}
                 type="minus"
             />
 
             <b className={valueSizeClass}>{value}</b>
+            {loading && <span className="count-inline-spinner" aria-hidden="true" />}
 
-            <CountIconButton onClick={() => onClick?.('plus')} size={size} type="plus" />
+            <CountIconButton onClick={() => onClick?.('plus')} size={size} type="plus" disabled={loading} />
         </div>
     );
 };

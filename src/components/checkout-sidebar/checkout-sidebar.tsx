@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckoutItemsDetails from "../checkout-items-details/checkout-items-details.tsx";
-import {ArrowRight, Package, Percent, Truck} from "lucide-react";
+import { ArrowRight, Package, Percent, Truck } from "lucide-react";
 import { Skeleton } from 'primereact/skeleton';
 
 const VAT = 15;
@@ -11,7 +11,7 @@ interface Props {
     loading?: boolean;
 }
 
-const CheckoutSidebar: React.FC<Props> = ({totalAmount, loading}) => {
+const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading }) => {
     const vatPrice = (totalAmount * VAT) / 100;
     const totalPrice = totalAmount + vatPrice + DELIVERY_PRICE;
 
@@ -32,28 +32,32 @@ const CheckoutSidebar: React.FC<Props> = ({totalAmount, loading}) => {
                 <div className="payment-details">
                     <CheckoutItemsDetails title={
                         <div className="checkout-items-title">
-                            <Package className='icon-price'/>
+                            <Package className='icon-price' />
                             Price
                         </div>
-                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${totalAmount} CZK`}/>
+                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${totalAmount} CZK`} />
 
                     <CheckoutItemsDetails title={
                         <div className="checkout-items-title">
-                            <Percent className='icon-price'/>
+                            <Percent className='icon-price' />
                             Taxes
                         </div>
-                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${vatPrice} CZK`}/>
+                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${vatPrice} CZK`} />
 
                     <CheckoutItemsDetails title={
                         <div className="checkout-items-title">
-                            <Truck className='icon-price'/>
+                            <Truck className='icon-price' />
                             Delivery
                         </div>
-                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${DELIVERY_PRICE} CZK`}/>
+                    } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${DELIVERY_PRICE} CZK`} />
 
-                    <button className="checkout-button" type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : 'Go to payment'}
-                        <ArrowRight className="w-5 ml-2"/>
+                    <button className="checkout-button" type="submit" disabled={loading} aria-busy={loading}>
+                        <span>Go to payment</span>
+                        {loading ? (
+                            <span className="checkout-spinner" aria-hidden="true" />
+                        ) : (
+                            <ArrowRight className="w-5 ml-2" />
+                        )}
                     </button>
                 </div>
             </div>

@@ -1,8 +1,8 @@
 import './Search.css'
-import {Search} from "lucide-react";
-import React, {useEffect, useRef, useState} from "react";
-import {useClickAway} from "react-use";
-import {Link} from "react-router-dom";
+import { Search } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useClickAway } from "react-use";
+import { Link } from "react-router-dom";
 
 interface Product {
     id: number;
@@ -31,7 +31,7 @@ const SearchInput = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setDefaultProducts(data.slice(0, 5)); // Ограничиваем до 5 товаров
+                    setDefaultProducts(data.slice(0, 5)); 
                 } else {
                     console.error('Failed to fetch products:', response.statusText);
                 }
@@ -57,7 +57,7 @@ const SearchInput = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setSearchResults(data.slice(0, 5)); // Ограничиваем результаты поиска до 5
+                    setSearchResults(data.slice(0, 5));
                 } else {
                     console.error('Search failed:', response.statusText);
                     setSearchResults([]);
@@ -87,59 +87,59 @@ const SearchInput = () => {
 
     return (
         <>
-            {focused && <div className="search-input-container"/>}
+            {focused && <div className="search-input-container" />}
 
-                <div
-                    ref={ref}
-                    className="search-input">
-                    <Search className="search-input-icon"/>
-                    <input
-                        className="search-input-field"
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleInputChange}
-                        onFocus={() => setFocused(true)}
-                        placeholder="Search for products..."
-                    />
+            <div
+                ref={ref}
+                className="search-input">
+                <Search className="search-input-icon" />
+                <input
+                    className="search-input-field"
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleInputChange}
+                    onFocus={() => setFocused(true)}
+                    placeholder="Search for products..."
+                />
 
-                    {focused && (
-                        <div className={`search-input-results ${focused ? 'search-input-results-active' : ''}`}>
-                            {loading && (
-                                <div className="search-input-results-loading">
-                                    Searching...
+                {focused && (
+                    <div className={`search-input-results ${focused ? 'search-input-results-active' : ''}`}>
+                        {loading && (
+                            <div className="search-input-results-loading">
+                                Searching...
+                            </div>
+                        )}
+
+                        {!loading && searchQuery.trim() !== '' && searchResults.length === 0 && (
+                            <div className="search-input-results-empty">
+                                No products found
+                            </div>
+                        )}
+
+                        {!loading && displayProducts.length === 0 && searchQuery.trim() === '' && (
+                            <div className="search-input-results-empty">
+                                No products available
+                            </div>
+                        )}
+
+                        {!loading && displayProducts.map(product => (
+                            <Link
+                                key={product.id}
+                                to={`/product/${product.id}`}
+                                className="search-input-results-content"
+                                onClick={handleResultClick}>
+                                <img
+                                    alt={product.name}
+                                    src={product.imageUrl}
+                                    className="search-input-results-image" />
+                                <div className="search-input-results-info">
+                                    <span className="search-input-results-name">{product.name}</span>
                                 </div>
-                            )}
-
-                            {!loading && searchQuery.trim() !== '' && searchResults.length === 0 && (
-                                <div className="search-input-results-empty">
-                                    No products found
-                                </div>
-                            )}
-
-                            {!loading && displayProducts.length === 0 && searchQuery.trim() === '' && (
-                                <div className="search-input-results-empty">
-                                    No products available
-                                </div>
-                            )}
-
-                            {!loading && displayProducts.map(product => (
-                                <Link
-                                    key={product.id}
-                                    to={`/product/${product.id}`}
-                                    className="search-input-results-content"
-                                    onClick={handleResultClick}>
-                                    <img
-                                        alt={product.name}
-                                        src={product.imageUrl}
-                                        className="search-input-results-image"/>
-                                    <div className="search-input-results-info">
-                                        <span className="search-input-results-name">{product.name}</span>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </div>
         </>
     );
 };

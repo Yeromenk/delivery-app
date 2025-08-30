@@ -1,5 +1,5 @@
 import Header from './components/header/Header.tsx'
-import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom'
+import {createBrowserRouter, Outlet, RouterProvider, useLocation} from 'react-router-dom'
 import Main from "./pages/main/Main.tsx"
 import NotFound from "./components/not-found-page/NotFound.tsx"
 import ErrorBoundary from "./components/error-boundary/ErrorBoundary.tsx";
@@ -16,9 +16,12 @@ const App = () => {
 }
 
 const Layout = () => {
+    const location = useLocation();
+    const isCheckout = location.pathname.startsWith('/checkout');
+
     return (
         <>
-            <Header/>
+            <Header hasSearch={!isCheckout} hasCart={!isCheckout} />
             <Outlet/>
         </>
     )

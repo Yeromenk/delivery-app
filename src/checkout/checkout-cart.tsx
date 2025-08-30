@@ -1,8 +1,8 @@
 import React from 'react';
-import type {CartStateItem} from "../lib/get-cart-details.ts";
+import type { CartStateItem } from "../lib/get-cart-details.ts";
 import CartItem from "../components/cart-item/cart-item.tsx";
-import type {PizzaSize, PizzaType} from "../assets/constants/pizza.ts";
-import {getCartItemsDetails} from "../lib/get-cart-items-details.ts";
+import type { PizzaSize, PizzaType } from "../assets/constants/pizza.ts";
+import { getCartItemsDetails } from "../lib/get-cart-items-details.ts";
 import { Skeleton } from 'primereact/skeleton';
 
 interface Props {
@@ -12,24 +12,24 @@ interface Props {
     loading?: boolean;
 }
 
-const CheckoutCart: React.FC<Props> = ({items, removeCartItem, onClickCountButton, loading = false}) => {
+const CheckoutCart: React.FC<Props> = ({ items, removeCartItem, onClickCountButton, loading = false }) => {
     return (
         <div className="white-block">
             <div className="checkout-content">
                 <h1>1. Cart</h1>
 
                 {loading ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="checkout-cart-skeleton-list">
                         {Array.from({ length: 3 }).map((_, index) => (
-                            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', border: '1px solid #f0f0f0', borderRadius: '0.5rem' }}>
-                                <Skeleton width="60px" height="60px" borderRadius="8px" />
-                                <div style={{ flex: 1 }}>
-                                    <Skeleton width="70%" height="1.25rem" className="mb-2" />
+                            <div key={index} className="checkout-cart-skeleton-item">
+                                <Skeleton width="64px" height="64px" borderRadius="10px" />
+                                <div className="checkout-cart-skeleton-middle">
+                                    <Skeleton width="70%" height="1.2rem" />
                                     <Skeleton width="90%" height="1rem" />
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
-                                    <Skeleton width="80px" height="1.25rem" />
-                                    <Skeleton width="100px" height="32px" borderRadius="4px" />
+                                <div className="checkout-cart-skeleton-right">
+                                    <Skeleton width="80px" height="1.2rem" />
+                                    <Skeleton width="110px" height="34px" borderRadius="6px" />
                                 </div>
                             </div>
                         ))}

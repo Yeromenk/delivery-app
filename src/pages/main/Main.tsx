@@ -1,7 +1,7 @@
 import './Main.css';
 import Categories from "../../components/categories/Categories.tsx";
 import Filters from "../../components/filters/Filters.tsx";
-import {ProductGroupList} from "../../components/producs-group-list/ProductGroupList.tsx";
+import {ProductGroupList} from "../../components/products-group-list/ProductGroupList.tsx";
 import {useProducts, type Product} from "../../hooks/use-products.ts";
 import {useQueryFilters} from "../../hooks/use-query-filters.ts";
 import ChooseProductModal from "../../components/choose-product-modal/choose-product-modal.tsx";
