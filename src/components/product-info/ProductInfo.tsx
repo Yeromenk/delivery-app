@@ -36,10 +36,6 @@ const ProductInfo = ({params: {id}}: { params: { id: string } }) => {
                         {product.name}
                     </h1>
 
-                    <p>
-                        Loren ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
-
                     <GroupVariants
                         selectedValue={"2"}
                         items={[

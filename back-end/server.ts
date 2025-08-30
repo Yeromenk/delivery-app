@@ -5,7 +5,9 @@ import ingredientsRoutes from './routes/ingredients';
 import productsRoutes from './routes/products';
 import cartRoutes from './routes/cart';
 import searchRoutes from './routes/search';
-
+import createOrderRoutes from './routes/create-order';
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,7 +34,7 @@ app.use('/api', ingredientsRoutes);
 app.use('/api', productsRoutes);
 app.use('/api', cartRoutes);
 app.use('/api/search', searchRoutes);
-
+app.use('/api', createOrderRoutes);
 
 async function startServer() {
     await checkDatabaseConnection();
