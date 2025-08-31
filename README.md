@@ -1,76 +1,100 @@
-# 🍕 Pizza Delivery Web Application
+# 🍕 Ye Pizza — Pizza Delivery Web App
 
-A modern, responsive pizza delivery web application built with **React** and **TypeScript**.  
-The app provides a complete e-commerce experience with product catalog, advanced filtering, shopping cart, and checkout.
-
----
-
-## 🚀 Features
-
-- **Product Catalog**: Browse pizzas organized by categories
-- **Advanced Filtering**: Filter by ingredients, price range, and other criteria
-- **Shopping Cart**: Add/remove items with real-time cart updates
-- **Checkout Process**: Full order flow with payment integration
-- **Responsive Design**: Optimized for desktop and mobile
-- **Loading States**: Skeleton loaders for better UX during data fetching
-- **Modal System**: Product details and selection modals
-- **URL State Management**: Shareable URLs with filter states
+A modern React + TypeScript application with a full e‑commerce flow: product catalog, advanced filtering, shopping cart, and checkout. The project is split into a Vite + React frontend and an Express + PostgreSQL backend, with Stripe Checkout and email notifications via Resend.
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-### Frontend
-- **React 18** — hooks & functional components
-- **TypeScript** — type-safe development
-- **Vite** — blazing fast dev server & bundler
-- **React Router DOM** — client-side routing
-- **Zustand** — lightweight state management
-- **React Hook Form** — forms & validation
-- **PrimeReact** — UI components (incl. Skeleton)
-- **Lucide React** — icon library
-
-### Styling
-- **CSS Modules** — scoped styles
-- **Custom CSS** — responsive layouts & animations
-
-### Dev Tools
-- **ESLint** — linting
-- **TypeScript** — type checking
-- **Vite HMR** — hot module replacement
-
-### Additional
-- **react-use** — utility hooks (e.g., intersection observer)
-- **Custom Hooks** — product fetching, query filters, cart management
+- Category‑based catalog (pizzas, snacks, drinks, desserts)
+- Filtering: ingredients, price range, sizes/types, sorting
+- Smooth cart updates with stable layout (no content jumps during async work)
+- Order placement with redirect to Stripe Checkout
+- Email notifications (Resend), consistent skeletons/spinners for loading
+- Responsive UI and polished interactions
 
 ---
 
-## 📁 Project Structure
+## Tech stack (with links)
 
-```bash
-src/
-├─ components/               # Reusable UI components
-│  ├─ header/                # Navigation header
-│  ├─ categories/            # Category navigation
-│  ├─ filters/               # Product filters
-│  ├─ product-card/          # Product display cards
-│  ├─ product-group-list/    # Grouped product listings
-│  ├─ checkout-sidebar/      # Checkout summary
-│  └─ ui/                    # Generic UI primitives (buttons, inputs, modal)
-│
-├─ pages/
-│  ├─ main/                  # Home page
-│  └─ checkout/              # Checkout page
-│
-├─ hooks/
-│  ├─ use-products.ts        # Product data fetching
-│  ├─ use-cart.ts            # Cart management
-│  ├─ use-query-filters.ts   # URL/query filters sync
-│  └─ use-intersection.ts    # Active category highlighting
-│
-├─ store/                    # Zustand stores (cart, categories, filters)
-├─ lib/                      # Utils (api client, formatters, constants)
-├─ styles/                   # Global styles
-├─ assets/                   # Images, icons
-├─ typings/                  # Shared TS types & interfaces
-└─ main.tsx                  # App bootstrap
+- Frontend: [React 18](https://react.dev), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vite.dev), [React Router](https://reactrouter.com/), [Zustand](https://github.com/pmndrs/zustand), [React Hook Form](https://react-hook-form.com/), [PrimeReact](https://primereact.org), [Lucide Icons](https://lucide.dev)
+- Backend: [Node.js](https://nodejs.org/), [Express](https://expressjs.com/), [PostgreSQL](https://www.postgresql.org/), [Stripe](https://stripe.com/docs), [Resend](https://resend.com)
+- Styling: [CSS](https://developer.mozilla.org/docs/Web/CSS)
+- Dev tools: [ESLint](https://eslint.org), [TypeScript](https://www.typescriptlang.org/), [nodemon](https://nodemon.io), [ts-node](https://typestrong.org/ts-node/)
+
+---
+
+## Prerequisites
+
+- Node.js 18+ (LTS recommended)
+- PostgreSQL 14+
+- Keys for Stripe and Resend (to test checkout and emails end‑to‑end)
+
+---
+
+## Setup
+
+Install dependencies.
+
+- Frontend (repo root):
+```powershell
+npm install
+```
+
+- Backend (`back-end/`):
+```powershell
+cd back-end
+npm install
+```
+
+### Backend environment
+Create `back-end/.env`:
+```env
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=ye_pizza
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# Integrations
+STRIPE_API_KEY=sk_test_xxx
+RESEND_API_KEY=re_xxx
+```
+Notes:
+- CORS in `back-end/server.ts` is set to `http://localhost:5173`.
+- If you change the frontend URL or port, update CORS and success/cancel URLs in `routes/create-order.ts`.
+
+### Initialize the database
+Create a database named `ye_pizza`, then run:
+```powershell
+cd back-end
+npm run build
+npm run create-schema
+npm run seed
+```
+This will create tables from `database/schema.sql` and seed demo data from `database/seed.ts` (prices in CZK).
+
+### Run in development
+- Backend:
+```powershell
+cd back-end
+npm run dev
+```
+- Frontend (in another terminal from the repo root):
+```powershell
+npm run dev
+```
+
+Frontend: http://localhost:5173
+Backend API: http://localhost:5000/api
+
+---
+
+## License
+
+MIT — use and modify freely.

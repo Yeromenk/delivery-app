@@ -1,10 +1,10 @@
 import './Header.css'
-import {User} from "lucide-react";
 import {Link} from "react-router-dom";
 import SearchInput from "../search-input/Search";
 import logo from "../../assets/images/logo.png";
 import CartButton from "../cart-button/cart-button.tsx";
 import React from "react";
+import { Profile } from '../profile/profile.tsx';
 
 interface IProps {
     hasSearch?: boolean;
@@ -41,10 +41,7 @@ const Header: React.FC<IProps> = ({hasSearch = true, hasCart = true}) => {
 
                 {/*Right part*/}
                 <div className="right-header">
-                    <button className="btn-sign-in">
-                        <User size={16}/>
-                        Sign in
-                    </button>
+                    <Profile />
 
                     {hasCart && (
                             <CartButton/>
