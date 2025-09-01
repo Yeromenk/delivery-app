@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import './cart-drawer.css';
 import CartDrawerItem from '../cart-drawer-item/cart-drawer-item.tsx';
 import { getCartItemsDetails } from '../../lib/get-cart-items-details.ts';
-import { type PizzaSize, type PizzaType } from '../../assets/constants/pizza.ts';
+import { type PizzaSize, type PizzaType } from '../../constants/pizza.ts';
 import useCart from "../../hooks/use-cart.ts";
 import { Skeleton } from 'primereact/skeleton';
 

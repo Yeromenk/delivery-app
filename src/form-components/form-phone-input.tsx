@@ -10,15 +10,17 @@ interface Props {
     required?: boolean;
     placeholder?: string;
     className?: string;
+    mask?: string;
 }
 
 export const FormPhoneInput: React.FC<Props> = ({
-                                                    name,
-                                                    label,
-                                                    required,
-                                                    placeholder,
-                                                    className,
-                                                }) => {
+    name,
+    label,
+    required,
+    placeholder,
+    className,
+    mask,
+}) => {
     const {
         control,
         formState: { errors },
@@ -46,15 +48,27 @@ export const FormPhoneInput: React.FC<Props> = ({
                     name={name}
                     control={control}
                     render={({ field }) => (
-                        <IMaskInput
-                            {...field}
-                            mask="+420 000 000 000"
-                            lazy={false}
-                            overwrite={true}
-                            placeholder={placeholder || "Phone"}
-                            className={`form-input__field ${className || ""}`}
-                            onAccept={(val) => field.onChange(val)}
-                        />
+                        mask ? (
+                            <IMaskInput
+                                {...field}
+                                mask={mask}
+                                lazy={false}
+                                overwrite={true}
+                                placeholder={placeholder || "Phone"}
+                                className={`form-input__field ${className || ""}`}
+                                onAccept={(val) => field.onChange(val)}
+                            />
+                        ) : (
+                            <input
+                                {...field}
+                                type="tel"
+                                inputMode="tel"
+                                autoComplete="tel"
+                                placeholder={placeholder || "Enter phone number"}
+                                className={`form-input__field ${className || ""}`}
+                                onChange={(e) => field.onChange(e.target.value)}
+                            />
+                        )
                     )}
                 />
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { CartStateItem } from "../lib/get-cart-details.ts";
 import CartItem from "../components/cart-item/cart-item.tsx";
-import type { PizzaSize, PizzaType } from "../assets/constants/pizza.ts";
+import type { PizzaSize, PizzaType } from "../constants/pizza.ts";
 import { getCartItemsDetails } from "../lib/get-cart-items-details.ts";
 import { Skeleton } from 'primereact/skeleton';
 

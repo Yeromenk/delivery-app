@@ -2,23 +2,23 @@ import pool from './db'
 import bcrypt from 'bcrypt';
 
 const categories = [
-    {name: 'Pizzas'},
-    {name: 'Snacks'},
-    {name: 'Drinks'},
-    {name: 'Desserts'}
+    { name: 'Pizzas' },
+    { name: 'Snacks' },
+    { name: 'Drinks' },
+    { name: 'Desserts' }
 ];
 
 const ingredients = [
-    {name: 'Mozzarella', price: 35, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA62D5D6027'},
-    {name: 'Pepperoni', price: 45, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA62D5D6027'},
-    {name: 'Mushrooms', price: 25, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA67259A324'},
-    {name: 'Tomatoes', price: 20, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA7AC1A1D67'},
-    {name: 'Bacon', price: 40, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA637AAB68F'},
-    {name: 'Meatballs', price: 50, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/b2f3a5d5afe44516a93cfc0d2ee60088.png'},
-    {name: 'Onion', price: 15, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA60AE6464C'},
-    {name: 'Cheddar Cheese', price: 25, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA69C1FE796'},
-    {name: 'Pickled cucumbers', price: 30, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A21DA51A81211E9EA89958D782B'},
-    {name: 'Sweet peppers', price: 40, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA63F774C1B'}
+    { name: 'Mozzarella', price: 35, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA62D5D6027' },
+    { name: 'Pepperoni', price: 45, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA62D5D6027' },
+    { name: 'Mushrooms', price: 25, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA67259A324' },
+    { name: 'Tomatoes', price: 20, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA7AC1A1D67' },
+    { name: 'Bacon', price: 40, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA637AAB68F' },
+    { name: 'Meatballs', price: 50, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/b2f3a5d5afe44516a93cfc0d2ee60088.png' },
+    { name: 'Onion', price: 15, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA60AE6464C' },
+    { name: 'Cheddar Cheese', price: 25, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA69C1FE796' },
+    { name: 'Pickled cucumbers', price: 30, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A21DA51A81211E9EA89958D782B' },
+    { name: 'Sweet peppers', price: 40, imageUrl: 'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA63F774C1B' }
 ];
 
 const randomPrice = (min: number, max: number): number => {
@@ -48,7 +48,7 @@ async function down() {
     try {
         await client.query('BEGIN');
 
-        await client.query('TRUNCATE TABLE "_CartItemToIngredient", "_IngredientToProduct", "VerificationCode", "CartItem", "Cart", "Order", "ProductItem", "Product", "Ingredient", "Category", "User" RESTART IDENTITY CASCADE');
+        await client.query('TRUNCATE TABLE "_CartItemToIngredient", "_IngredientToProduct", "VerificationCode", "CartItem", "Cart", "Order", "StoryItem", "Story", "ProductItem", "Product", "Ingredient", "Category", "User" RESTART IDENTITY CASCADE');
 
         await client.query('COMMIT');
         console.log('Database cleared successfully');
@@ -101,32 +101,32 @@ async function up() {
 
         // Add pizza products
         const pizzaProducts = [
-            {name: 'Margherita Classic', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D610CF7E265B7C72BE5AE757CA7.avif', categoryId: 1},
-            {name: 'Pepperoni Deluxe', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D612FC7B7FCA5BE822752BEE1E5.avif', categoryId: 1},
-            {name: 'Four Cheese Special', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D61389AB51A8F648A0DBA5B1689.avif', categoryId: 1},
-            {name: 'BBQ Chicken Supreme', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D613B84A5DBB4C1C50FB9583B7E.avif', categoryId: 1},
-            {name: 'Vegetarian Garden', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D610D2925109AB2E1C92CC5383C.avif', categoryId: 1},
-            {name: 'Meat Lovers Special', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif', categoryId: 1}
+            { name: 'Margherita Classic', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D610CF7E265B7C72BE5AE757CA7.avif', categoryId: 1 },
+            { name: 'Pepperoni Deluxe', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D612FC7B7FCA5BE822752BEE1E5.avif', categoryId: 1 },
+            { name: 'Four Cheese Special', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D61389AB51A8F648A0DBA5B1689.avif', categoryId: 1 },
+            { name: 'BBQ Chicken Supreme', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D613B84A5DBB4C1C50FB9583B7E.avif', categoryId: 1 },
+            { name: 'Vegetarian Garden', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D610D2925109AB2E1C92CC5383C.avif', categoryId: 1 },
+            { name: 'Meat Lovers Special', imageUrl: 'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif', categoryId: 1 }
         ];
 
         // Add snack products
         const snackProducts = [
-            {name: 'Crispy French Fries', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019840bab7aa74cd8d4149cd161ba42d.avif', categoryId: 2},
-            {name: 'Chicken Wings Hot', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019570d1cf4972f59b57ab333237e745.avif', categoryId: 2},
-            {name: 'Chicken Roll', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980e8a432071ca863e03212730c399.avif', categoryId: 2}
+            { name: 'Crispy French Fries', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019840bab7aa74cd8d4149cd161ba42d.avif', categoryId: 2 },
+            { name: 'Chicken Wings Hot', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019570d1cf4972f59b57ab333237e745.avif', categoryId: 2 },
+            { name: 'Chicken Roll', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980e8a432071ca863e03212730c399.avif', categoryId: 2 }
         ];
 
         // Add drink products
         const drinkProducts = [
-            {name: 'Coca Cola Classic', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980e8d35af7157a519bd92cabda4f7.avif', categoryId: 3},
-            {name: 'Orange Juice Fresh', imageUrl: 'https://media.dodostatic.net/image/r:584x584/0197f8636ad574528ad8136969ef6446.avif', categoryId: 3},
-            {name: 'Apple Juice', imageUrl: 'https://media.dodostatic.net/image/r:584x584/0197f866677d77d580aa9f99dd242835.avif', categoryId: 3}
+            { name: 'Coca Cola Classic', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980e8d35af7157a519bd92cabda4f7.avif', categoryId: 3 },
+            { name: 'Orange Juice Fresh', imageUrl: 'https://media.dodostatic.net/image/r:584x584/0197f8636ad574528ad8136969ef6446.avif', categoryId: 3 },
+            { name: 'Apple Juice', imageUrl: 'https://media.dodostatic.net/image/r:584x584/0197f866677d77d580aa9f99dd242835.avif', categoryId: 3 }
         ];
 
         // Add dessert products
         const dessertProducts = [
-            {name: 'Chocolate Cheesecake', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019813870ad07105b599cac0c9b1e04c.avif', categoryId: 4},
-            {name: 'Tiramisu Classic', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980cc3481c78e288c9a989de2dbdc6.avif', categoryId: 4}
+            { name: 'Chocolate Cheesecake', imageUrl: 'https://media.dodostatic.net/image/r:584x584/019813870ad07105b599cac0c9b1e04c.avif', categoryId: 4 },
+            { name: 'Tiramisu Classic', imageUrl: 'https://media.dodostatic.net/image/r:584x584/01980cc3481c78e288c9a989de2dbdc6.avif', categoryId: 4 }
         ];
 
         const allProducts = [...pizzaProducts, ...snackProducts, ...drinkProducts, ...dessertProducts];
@@ -135,7 +135,7 @@ async function up() {
 
         for (const product of allProducts) {
             const result = await client.query(productQuery, [product.name, product.imageUrl, product.categoryId]);
-            productIds.push({id: result.rows[0].id, categoryId: product.categoryId});
+            productIds.push({ id: result.rows[0].id, categoryId: product.categoryId });
         }
 
         // Add ingredient-product relationships for pizzas
@@ -209,6 +209,36 @@ async function up() {
         const cartIngredientQuery = 'INSERT INTO "_CartItemToIngredient" ("A", "B") VALUES ($1, $2)';
         for (let i = 1; i <= 3; i++) {
             await client.query(cartIngredientQuery, [cartItemResult.rows[0].id, i]);
+        }
+
+        // Stories (like the Prisma example)
+        const storyCovers = [
+            'https://cdn.inappstory.ru/story/xep/xzh/zmc/cr4gcw0aselwvf628pbmj3j/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3101815496',
+            'https://cdn.inappstory.ru/story/km2/9gf/jrn/sb7ls1yj9fe5bwvuwgym73e/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3074015640',
+            'https://cdn.inappstory.ru/story/quw/acz/zf5/zu37vankpngyccqvgzbohj1/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=1336215020',
+            'https://cdn.inappstory.ru/story/7oc/5nf/ipn/oznceu2ywv82tdlnpwriyrq/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=38903958',
+            'https://cdn.inappstory.ru/story/q0t/flg/0ph/xt67uw7kgqe9bag7spwkkyw/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=2941222737',
+            'https://cdn.inappstory.ru/story/lza/rsp/2gc/xrar8zdspl4saq4uajmso38/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=4207486284',
+        ];
+        const insertStoryQuery = 'INSERT INTO "Story" ("previewImageUrl") VALUES ($1) RETURNING id';
+        const storyIds: number[] = [];
+        for (const cover of storyCovers) {
+            const r = await client.query(insertStoryQuery, [cover]);
+            storyIds.push(r.rows[0].id);
+        }
+
+        // Story items for the first story
+        const firstStoryId = storyIds[0];
+        const storyItems = [
+            'https://cdn.inappstory.ru/file/dd/yj/sx/oqx9feuljibke3mknab7ilb35t.webp?k=IgAAAAAAAAAE',
+            'https://cdn.inappstory.ru/file/jv/sb/fh/io7c5zarojdm7eus0trn7czdet.webp?k=IgAAAAAAAAAE',
+            'https://cdn.inappstory.ru/file/ts/p9/vq/zktyxdxnjqbzufonxd8ffk44cb.webp?k=IgAAAAAAAAAE',
+            'https://cdn.inappstory.ru/file/ur/uq/le/9ufzwtpdjeekidqq04alfnxvu2.webp?k=IgAAAAAAAAAE',
+            'https://cdn.inappstory.ru/file/sy/vl/c7/uyqzmdojadcbw7o0a35ojxlcul.webp?k=IgAAAAAAAAAE',
+        ];
+        const insertStoryItemQuery = 'INSERT INTO "StoryItem" ("storyId", "sourceUrl") VALUES ($1, $2)';
+        for (const src of storyItems) {
+            await client.query(insertStoryItemQuery, [firstStoryId, src]);
         }
 
         await client.query('COMMIT');

@@ -8,6 +8,7 @@ import productsRoutes from './routes/products';
 import cartRoutes from './routes/cart';
 import searchRoutes from './routes/search';
 import createOrderRoutes from './routes/create-order';
+import storiesRoutes from './routes/stories';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use('/api', cartRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api', createOrderRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/stories', storiesRoutes);
 
 async function startServer() {
     await checkDatabaseConnection();

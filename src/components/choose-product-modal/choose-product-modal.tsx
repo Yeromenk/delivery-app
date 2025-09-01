@@ -2,8 +2,8 @@ import React from "react";
 import './choose-product-modal.css';
 import ChoosePizzaForm from "../choose-pizza-form/choose-pizza-form.tsx";
 import ChooseProductForm from "../choose-product-form/choose-product-form.tsx";
-import type {PizzaSize, PizzaType} from "../../assets/constants/pizza.ts";
-import {useCartStore} from "../../store/cart.ts";
+import type { PizzaSize, PizzaType } from "../../constants/pizza.ts";
+import { useCartStore } from "../../store/cart.ts";
 import toast from "react-hot-toast";
 
 interface Ingredient {
@@ -34,7 +34,7 @@ interface Props {
     onClose?: () => void;
 }
 
-const ChooseProductModal: React.FC<Props> = ({product, onClose}) => {
+const ChooseProductModal: React.FC<Props> = ({ product, onClose }) => {
     const firstItem = product.items[0];
     const isPizzaForm = Boolean(firstItem.pizzaType);
 

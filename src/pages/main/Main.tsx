@@ -6,6 +6,7 @@ import {useProducts, type Product} from "../../hooks/use-products.ts";
 import {useQueryFilters} from "../../hooks/use-query-filters.ts";
 import ChooseProductModal from "../../components/choose-product-modal/choose-product-modal.tsx";
 import {useState} from 'react';
+import { Stories } from '../../components/stories/stories.tsx';
 
 const Main = () => {
     const filters = useQueryFilters();
@@ -32,7 +33,10 @@ const Main = () => {
                 </div>
             </div>
             <div className="main-container">
+                 <Stories />
                 <div className="content-container">
+
+                    
                     <div className="filtration">
                         <Filters />
                     </div>

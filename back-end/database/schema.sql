@@ -1,6 +1,17 @@
 -- Создание enum типов
-CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'SUCCEEDED', 'CANCELLED');
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'UserRole') THEN
+    CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+  END IF;
+END$$;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'OrderStatus') THEN
+    CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'SUCCEEDED', 'CANCELLED');
+  END IF;
+END$$;
 
 -- Таблица пользователей
 CREATE TABLE IF NOT EXISTS "User" (
@@ -9,12 +20,25 @@ CREATE TABLE IF NOT EXISTS "User" (
                                       email VARCHAR(255) UNIQUE NOT NULL,
                                       password VARCHAR(255) NOT NULL,
                                       role "UserRole" DEFAULT 'USER',
+                    phone VARCHAR(255),
                                       verified TIMESTAMP WITH TIME ZONE,
                                       provider VARCHAR(255),
                                       "providerId" VARCHAR(255),
                                       "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                                       "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Ensure phone column exists for existing installations
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_name = 'User' AND column_name = 'phone'
+  ) THEN
+    EXECUTE 'ALTER TABLE "User" ADD COLUMN phone VARCHAR(255)';
+  END IF;
+END$$;
 
 -- Таблица категорий
 CREATE TABLE IF NOT EXISTS "Category" (
@@ -93,6 +117,23 @@ CREATE TABLE IF NOT EXISTS "Order" (
                                        "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS "Story" (
+  "id" SERIAL PRIMARY KEY,
+  "previewImageUrl" TEXT NOT NULL,
+  "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS "StoryItem" (
+  "id" SERIAL PRIMARY KEY,
+  "storyId" INTEGER NOT NULL,
+  "sourceUrl" TEXT NOT NULL,
+  "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT "StoryItem_storyId_fkey"
+    FOREIGN KEY ("storyId") REFERENCES "Story"("id")
+    ON DELETE CASCADE
+);
+
+
 -- Таблица кодов верификации
 CREATE TABLE IF NOT EXISTS "VerificationCode" (
                                                   id SERIAL PRIMARY KEY,
@@ -122,3 +163,4 @@ CREATE INDEX IF NOT EXISTS "idx_product_category" ON "Product"("categoryId");
 CREATE INDEX IF NOT EXISTS "idx_cart_user" ON "Cart"("userId");
 CREATE INDEX IF NOT EXISTS "idx_order_user" ON "Order"("userId");
 CREATE INDEX IF NOT EXISTS "idx_verification_user" ON "VerificationCode"("userId");
+CREATE INDEX IF NOT EXISTS "StoryItem_storyId_idx" ON "StoryItem"("storyId");

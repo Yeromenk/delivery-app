@@ -1,5 +1,5 @@
 import Header from './components/header/Header.tsx'
-import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Outlet, RouterProvider, useLocation, useNavigationType } from 'react-router-dom'
 import Main from "./pages/main/Main.tsx"
 import NotFound from "./components/not-found-page/NotFound.tsx"
 import ErrorBoundary from "./components/error-boundary/ErrorBoundary.tsx";
@@ -9,6 +9,8 @@ import CheckoutPage from "./pages/checkout/checkout-page.tsx";
 import Success from "./components/success/success.tsx";
 import Cancel from "./components/cancel/cancel.tsx";
 import ProfilePage from './pages/profile/profile.tsx';
+import { useEffect } from 'react';
+import NProgress from 'nprogress';
 
 const App = () => {
     return (
@@ -18,7 +20,14 @@ const App = () => {
 
 const Layout = () => {
     const location = useLocation();
+    const navType = useNavigationType();
     const isCheckout = location.pathname.startsWith('/checkout');
+
+    useEffect(() => {
+        NProgress.start();
+        const id = requestAnimationFrame(() => NProgress.done());
+        return () => cancelAnimationFrame(id);
+    }, [location.key, navType]);
 
     return (
         <>

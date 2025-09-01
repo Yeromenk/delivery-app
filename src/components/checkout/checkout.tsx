@@ -1,18 +1,18 @@
 import './checkout.css'
 import useCart from "../../hooks/use-cart.ts";
 import CheckoutSidebar from "../checkout-sidebar/checkout-sidebar.tsx";
-import {FormProvider, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import CheckoutCart from "../../checkout/checkout-cart.tsx";
 import CheckoutPersonalInfo from "../../checkout/checkout-personal-info.tsx";
 import CheckoutAddressForm from "../../checkout/checkout-address-form.tsx";
-import {checkoutFormSchema, type CheckoutFormValues} from "../../checkout/checkout-form-schema.tsx";
+import { checkoutFormSchema, type CheckoutFormValues } from "../../checkout/checkout-form-schema.tsx";
 import toast from "react-hot-toast";
-import {useCallback, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 const Checkout = () => {
-    const {totalAmount, items, removeCartItem, updateItemQuantity, loading} = useCart();
+    const { totalAmount, items, removeCartItem, updateItemQuantity, loading } = useCart();
     const [submitting, setSubmitting] = useState(false);
 
     const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
@@ -31,6 +31,52 @@ const Checkout = () => {
             comment: '',
         }
     })
+
+    useEffect(() => {
+        let mounted = true;
+        const prefillFromMe = async () => {
+            try {
+                const { data } = await axios.get('http://localhost:5000/api/auth/me', { withCredentials: true });
+                if (!mounted || !data?.user) return;
+
+                const current = form.getValues();
+                const full = String(data.user.fullName || '').trim();
+                const [first, ...rest] = full.split(/\s+/);
+                const last = rest.join(' ');
+
+                if (!current.email && data.user.email) {
+                    form.setValue('email', data.user.email);
+                }
+
+                if (!current.firstName && first) {
+                    form.setValue('firstName', first);
+                }
+
+                if (!current.lastName && last) {
+                    form.setValue('lastName', last);
+                }
+
+                if (!current.phone && data.user.phone) {
+                    form.setValue('phone', data.user.phone);
+                }
+            } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    return;
+                }
+                console.log("Error loading user data", error);
+                toast.error("Error loading user data");
+            }
+        };
+
+        prefillFromMe();
+
+        const onAuth = () => prefillFromMe();
+        window.addEventListener('auth:success', onAuth as EventListener);
+        return () => {
+            mounted = false;
+            window.removeEventListener('auth:success', onAuth as EventListener);
+        };
+    }, [])
 
     const onSubmit = useCallback(
         async (data: CheckoutFormValues) => {
@@ -93,12 +139,12 @@ const Checkout = () => {
                                     loading={loading}
                                 />
 
-                                <CheckoutPersonalInfo/>
+                                <CheckoutPersonalInfo />
 
-                                <CheckoutAddressForm/>
+                                <CheckoutAddressForm />
                             </div>
 
-                            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting}/>
+                            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
                         </div>
                     </div>
                 </form>
