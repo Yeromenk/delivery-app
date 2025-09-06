@@ -1,12 +1,12 @@
 import './Main.css';
 import Categories from "../../components/categories/Categories.tsx";
 import Filters from "../../components/filters/Filters.tsx";
-import {ProductGroupList} from "../../components/products-group-list/ProductGroupList.tsx";
-import {useProducts, type Product} from "../../hooks/use-products.ts";
-import {useQueryFilters} from "../../hooks/use-query-filters.ts";
-import ChooseProductModal from "../../components/choose-product-modal/choose-product-modal.tsx";
-import {useState} from 'react';
+import { ProductGroupList } from "../../components/products-group-list/ProductGroupList.tsx";
+import { useProducts, type Product } from "../../hooks/use-products.ts";
+import { useQueryFilters } from "../../hooks/use-query-filters.ts";
 import { Stories } from '../../components/stories/stories.tsx';
+import ChooseProductModal from "../../components/choose-product-modal/choose-product-modal.tsx";
+import { useState } from 'react';
 
 const Main = () => {
     const filters = useQueryFilters();
@@ -33,10 +33,10 @@ const Main = () => {
                 </div>
             </div>
             <div className="main-container">
-                 <Stories />
+                <Stories />
                 <div className="content-container">
 
-                    
+
                     <div className="filtration">
                         <Filters />
                     </div>
@@ -70,7 +70,14 @@ const Main = () => {
 
             {isModalOpen && selectedProduct && (
                 <ChooseProductModal
-                    product={selectedProduct}
+                    product={{
+                        id: selectedProduct.id.toString(),
+                        name: selectedProduct.name,
+                        imageUrl: selectedProduct.imageUrl,
+                        category: 'category',
+                        items: selectedProduct.items as any,
+                        ingredients: selectedProduct.ingredients
+                    }}
                     onClose={closeModal}
                 />
             )}

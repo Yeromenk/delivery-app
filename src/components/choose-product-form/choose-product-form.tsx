@@ -1,21 +1,29 @@
 import React from 'react';
 import './choose-product-form.css';
 
+interface Ingredient {
+    id: number;
+    name: string;
+    imageUrl: string;
+    price: number;
+}
+
 interface Props {
     imageUrl?: string;
     name: string;
     onClickAdd?: VoidFunction;
     price: number;
     loading?: boolean;
+    ingredients?: Ingredient[];
 }
 
 const ChooseProductForm: React.FC<Props> = ({
-                                                imageUrl,
-                                                name,
-                                                onClickAdd,
-                                                loading,
-                                                price
-                                            }) => {
+    imageUrl,
+    name,
+    onClickAdd,
+    loading,
+    price,
+}) => {
 
     const handleClickAdd = () => {
         onClickAdd?.();

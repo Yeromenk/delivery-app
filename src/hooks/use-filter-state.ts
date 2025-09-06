@@ -38,11 +38,25 @@ export const useFilterState = () => {
     useEffect(() => {
         const newSearchParams = new URLSearchParams();
 
-        if (prices.priceFrom) newSearchParams.set('priceFrom', String(prices.priceFrom));
-        if (prices.priceTo) newSearchParams.set('priceTo', String(prices.priceTo));
-        if (sizes.size > 0) newSearchParams.set('sizes', Array.from(sizes).join(','));
-        if (pizzaTypes.size > 0) newSearchParams.set('pizzaTypes', Array.from(pizzaTypes).join(','));
-        if (selectedIds.size > 0) newSearchParams.set('ingredients', Array.from(selectedIds).join(','));
+        if (prices.priceFrom) {
+             newSearchParams.set('priceFrom', String(prices.priceFrom));
+        }
+
+        if (prices.priceTo) {
+            newSearchParams.set('priceTo', String(prices.priceTo));
+        }
+
+        if (sizes.size > 0) {
+            newSearchParams.set('sizes', Array.from(sizes).join(','));
+        }
+
+        if (pizzaTypes.size > 0) {
+            newSearchParams.set('pizzaTypes', Array.from(pizzaTypes).join(','));
+        }
+
+        if (selectedIds.size > 0) {
+            newSearchParams.set('ingredients', Array.from(selectedIds).join(','));
+        }
 
         setSearchParams(newSearchParams, { replace: true });
     }, [prices, sizes, pizzaTypes, selectedIds, setSearchParams]);

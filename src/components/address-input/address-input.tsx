@@ -46,7 +46,9 @@ export const AddressInput: React.FC<Props> = ({ name, placeholder, className }) 
                 }
             });
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             const data = await response.json();
 
@@ -71,7 +73,7 @@ export const AddressInput: React.FC<Props> = ({ name, placeholder, className }) 
                 };
             }));
         } catch (error) {
-            console.error('Error fetching addresses:', error);
+            console.error("[ADDRESS_FETCH_ERROR], ", error);
             setSuggestions([]);
         } finally {
             setIsLoading(false);

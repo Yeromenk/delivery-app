@@ -20,7 +20,7 @@ export const useIngredients = () => {
 
                 setItems(data);
             } catch (error) {
-                console.error('Error fetching ingredients:', error);
+                console.error("[INGREDIENTS_FETCH_ERROR], ", error);
                 setItems([]);
             } finally {
                 setLoading(false);

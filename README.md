@@ -95,6 +95,7 @@ Backend API: http://localhost:5000/api
 
 ---
 
-## License
+## TODO 
+1. отправка емайла при успешной регистрации
+2. посмотреть что можно улучшить или добавить
 
-MIT — use and modify freely.

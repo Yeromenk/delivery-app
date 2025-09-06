@@ -1,6 +1,7 @@
 import './ProductCard.css'
 import React from "react";
 import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Ingredient {
     id: number;
@@ -20,17 +21,58 @@ interface IProductCardProps {
 }
 
 const ProductCard: React.FC<IProductCardProps> = ({
+    id,
     name,
     price,
     imageUrl,
     onClick,
     ingredients = [],
 }) => {
+    if (onClick) {
+        return (
+            <div className="productCard-container">
+                <div
+                    className="productCard"
+                    onClick={onClick}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <img className="product-img" src={imageUrl} alt={name} />
+                </div>
+
+                <h2 className="productCard-h2">{name}</h2>
+
+                <p className="productCard-p">
+                    {ingredients.length > 0
+                        ? ingredients.map((ingredient) => ingredient.name).join(', ')
+                        : ''}
+                </p>
+
+                <div className="product-footer">
+                    <span className="product-price-text">
+                        from <b>{price} CZK</b>
+                    </span>
+
+                    <button
+                        className="productCard-btn"
+                        onClick={onClick}
+                    >
+                        <Plus size={20} />
+                        Add
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="productCard-container">
-            <div className="productCard" onClick={onClick}>
+            <Link
+                to={`/products/${id}`}
+                className="productCard"
+                style={{ textDecoration: 'none', color: 'inherit' }}
+            >
                 <img className="product-img" src={imageUrl} alt={name} />
-            </div>
+            </Link>
 
             <h2 className="productCard-h2">{name}</h2>
 
@@ -45,10 +87,14 @@ const ProductCard: React.FC<IProductCardProps> = ({
                     from <b>{price} CZK</b>
                 </span>
 
-                <button className="productCard-btn">
+                <Link
+                    to={`/products/${id}`}
+                    className="productCard-btn"
+                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
                     <Plus size={20} />
                     Add
-                </button>
+                </Link>
             </div>
         </div>
     );

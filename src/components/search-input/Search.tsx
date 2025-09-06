@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 interface Product {
     id: number;
@@ -31,7 +32,7 @@ const SearchInput = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setDefaultProducts(data.slice(0, 5)); 
+                    setDefaultProducts(data.slice(0, 5));
                 } else {
                     console.error('Failed to fetch products:', response.statusText);
                 }
@@ -53,17 +54,17 @@ const SearchInput = () => {
         const timeoutId = setTimeout(async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/products/search?query=${encodeURIComponent(searchQuery)}`);
+                const response = await axios.get(`http://localhost:5000/api/products/search?query=${encodeURIComponent(searchQuery)}`);
 
-                if (response.ok) {
-                    const data = await response.json();
+                if (response.status === 200) {
+                    const data = response.data;
                     setSearchResults(data.slice(0, 5));
                 } else {
-                    console.error('Search failed:', response.statusText);
+                    console.error('[PRODUCTS_SEARCH_ERROR], ', response.statusText);
                     setSearchResults([]);
                 }
             } catch (error) {
-                console.error('Error searching products:', error);
+                console.error('[PRODUCTS_SEARCH_ERROR], ', error);
                 setSearchResults([]);
             } finally {
                 setLoading(false);
@@ -125,7 +126,7 @@ const SearchInput = () => {
                         {!loading && displayProducts.map(product => (
                             <Link
                                 key={product.id}
-                                to={`/product/${product.id}`}
+                                to={`/products/${product.id}`}
                                 className="search-input-results-content"
                                 onClick={handleResultClick}>
                                 <img

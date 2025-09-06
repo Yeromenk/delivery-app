@@ -49,7 +49,7 @@ const ChooseProductModal: React.FC<Props> = ({ product, onClose }) => {
             toast.success("Product added successfully.");
             onClose?.();
         } catch (e) {
-            console.error(e);
+            console.error("[ADD_PRODUCT_ERROR], ", e);
             toast.error("Failed to add product");
         }
     }
@@ -63,7 +63,7 @@ const ChooseProductModal: React.FC<Props> = ({ product, onClose }) => {
             toast.success("Pizza added successfully.");
             onClose?.();
         } catch (e) {
-            console.error(e);
+            console.error("[ADD_PIZZA_ERROR], ", e);
             toast.error("Failed to add pizza");
         }
     }
@@ -96,6 +96,7 @@ const ChooseProductModal: React.FC<Props> = ({ product, onClose }) => {
                                 imageUrl={product.imageUrl}
                                 name={product.name}
                                 price={firstItem.price}
+                                ingredients={product.ingredients}
                                 onClickAdd={onAddProduct}
                                 loading={loading}
                             />

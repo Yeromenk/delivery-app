@@ -1,5 +1,5 @@
-// src/hooks/use-product.ts
 import { useEffect, useState } from 'react';
+import axios, { AxiosError } from 'axios';
 
 interface Ingredient {
     id: number;
@@ -33,17 +33,20 @@ export const useProduct = (id: string | number) => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:5000/api/products/${id}`);
+                const response = await axios.get(`http://localhost:5000/api/products/${id}`);
 
-                if (!response.ok) {
-                    throw new Error('Product not found');
-                }
-
-                const data = await response.json();
-                setProduct(data);
+                setProduct(response.data);
                 setError(null);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to fetch product');
+                if (err instanceof AxiosError) {
+                    if (err.response?.status === 404) {
+                        setError('Product not found');
+                    } else {
+                        setError(err.response?.data?.message || 'Failed to fetch product');
+                    }
+                } else {
+                    setError(err instanceof Error ? err.message : 'Failed to fetch product');
+                }
                 setProduct(null);
             } finally {
                 setLoading(false);

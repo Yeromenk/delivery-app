@@ -73,6 +73,7 @@ const ChoosePizzaForm: React.FC<Props> = ({
             <div className="choose-pizza">
                 <h1>{name}</h1>
                 <p>{textDetails}</p>
+                <p>{ingredients.map((ingredient) => ingredient.name).join(', ')}</p>
 
                 <div className="variants-section">
                     <GroupVariants

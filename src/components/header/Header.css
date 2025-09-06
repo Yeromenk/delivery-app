@@ -41,6 +41,34 @@ p {
     gap: 1.25rem;
 }
 
+.logo-link {
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.logo-link:hover {
+    transform: scale(1.05);
+}
+
+.brand-link {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin: -4px -8px;
+}
+
+.brand-link h1 {
+    margin: 0;
+}
+
+.brand-link p {
+    margin: 0;
+}
+
 .right-header {
     display: flex;
     align-items: center;

@@ -1,8 +1,8 @@
-import {create} from "zustand";
-import {type CartStateItem, getCartDetails} from "../lib/get-cart-details.ts";
+import { create } from "zustand";
+import { type CartStateItem, getCartDetails } from "../lib/get-cart-details.ts";
 import axios from "axios";
 import { getCartToken } from "../lib/cart-token.ts";
-import type {CreateCartItemValues} from "../types/cart.types.ts";
+import type { CreateCartItemValues } from "../types/cart.types.ts";
 
 export interface CartState {
     loading: boolean;
@@ -39,7 +39,7 @@ export const useCartStore = create<CartState>()((set, get) => ({
                 loading: false
             });
         } catch (e) {
-            console.error(e);
+            console.error("[CART_FETCH_ERROR]", e);
             set({ error: true, loading: false });
         }
     },
@@ -57,7 +57,7 @@ export const useCartStore = create<CartState>()((set, get) => ({
 
             await get().fetchCartItems();
         } catch (e) {
-            console.error(e);
+            console.error("[CART_REMOVE_ERROR]", e);
             set({ error: true, loading: false });
         }
     },
@@ -83,7 +83,7 @@ export const useCartStore = create<CartState>()((set, get) => ({
                 loading: false
             });
         } catch (e) {
-            console.error(e);
+            console.error("[CART_UPDATE_ERROR]", e);
             set({ error: true, loading: false });
         }
     },
@@ -106,7 +106,7 @@ export const useCartStore = create<CartState>()((set, get) => ({
                 loading: false
             });
         } catch (e) {
-            console.error(e);
+            console.error("[CART_ADD_ERROR]", e);
             set({ error: true, loading: false });
         }
     }

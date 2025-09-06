@@ -63,7 +63,7 @@ const Checkout = () => {
                 if (axios.isAxiosError(error) && error.response?.status === 401) {
                     return;
                 }
-                console.log("Error loading user data", error);
+                console.log("[USER_DATA_ERROR], ", error);
                 toast.error("Error loading user data");
             }
         };

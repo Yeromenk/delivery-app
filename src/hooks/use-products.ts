@@ -1,5 +1,6 @@
-import {useEffect, useState} from "react";
-import {findPizzas, type GetSearchParams} from "../lib/find-pizzas.ts";
+import { useEffect, useState } from "react";
+import { findPizzas, type GetSearchParams } from "../lib/find-pizzas.ts";
+import axios from "axios";
 
 export interface Ingredient {
     id: number;
@@ -38,7 +39,7 @@ export const useProducts = (filters?: GetSearchParams) => {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<Product[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProducts>({});
-    const [categories, setCategories] = useState<{[id: number]: string}>({});
+    const [categories, setCategories] = useState<{ [id: number]: string }>({});
 
     useEffect(() => {
         async function getProducts() {
@@ -54,15 +55,15 @@ export const useProducts = (filters?: GetSearchParams) => {
                 if (hasActiveFilters) {
                     categoriesData = await findPizzas(filters);
                 } else {
-                    const response = await fetch('http://localhost:5000/api/categories');
-                    if (response.ok) {
-                        categoriesData = await response.json();
+                    const response = await axios.get('http://localhost:5000/api/categories');
+                    if (response.status === 200) {
+                        categoriesData = response.data;
                     } else {
                         throw new Error('Failed to fetch categories');
                     }
                 }
 
-                const categoryNames: {[id: number]: string} = {};
+                const categoryNames: { [id: number]: string } = {};
                 const allProducts: Product[] = [];
                 const grouped: GroupedProducts = {};
 
@@ -82,7 +83,7 @@ export const useProducts = (filters?: GetSearchParams) => {
                 setGroupedProducts(grouped);
                 setCategories(categoryNames);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                console.error("[PRODUCTS_FETCH_ERROR], ", error);
                 setItems([]);
                 setGroupedProducts({});
                 setCategories({});

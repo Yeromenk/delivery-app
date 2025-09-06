@@ -1,0 +1,48 @@
+.profile-form-container h1{
+    margin-bottom: 20px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-actions {
+    margin-top: 8px;
+}
+
+.update-profile-button {
+    width: 100%;
+    padding: 10px 14px;
+    background: #FE5F1E;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.update-profile-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.logout-section {
+    margin-top: 16px;
+}
+
+.logout-button {
+    width: 100%;
+    padding: 10px 14px;
+    background: #f3f4f6;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #e5e7eb;
+}

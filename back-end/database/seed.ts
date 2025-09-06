@@ -211,7 +211,7 @@ async function up() {
             await client.query(cartIngredientQuery, [cartItemResult.rows[0].id, i]);
         }
 
-        // Stories (like the Prisma example)
+        // Stories
         const storyCovers = [
             'https://cdn.inappstory.ru/story/xep/xzh/zmc/cr4gcw0aselwvf628pbmj3j/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3101815496',
             'https://cdn.inappstory.ru/story/km2/9gf/jrn/sb7ls1yj9fe5bwvuwgym73e/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3074015640',

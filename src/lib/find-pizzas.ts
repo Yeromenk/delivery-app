@@ -40,7 +40,7 @@ export const findPizzas = async (params: GetSearchParams) => {
         return await response.json();
 
     } catch (error) {
-        console.error('Error in findPizzas:', error);
+        console.error("[FIND_PIZZAS_ERROR]", error);
         throw error;
     }
 };

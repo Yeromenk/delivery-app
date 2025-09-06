@@ -29,7 +29,6 @@ const RangeSlider = React.forwardRef<HTMLDivElement, RangeSliderProps>(
         const trackRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
-            // Update localValues when the external value prop changes
             setLocalValues(Array.isArray(value) ? value : [min, max]);
         }, [min, max, value]);
 

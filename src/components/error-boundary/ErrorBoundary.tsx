@@ -33,19 +33,39 @@ class ErrorBoundary extends Component<Props, State> {
             return (
                 <div className="error-boundary">
                     <div className="error-content">
-                        <h2>🚫 Something went wrong</h2>
-                        <p>We're sorry, but something unexpected happened.</p>
-                        <button
-                            className="error-button"
-                            onClick={() => window.location.reload()}
-                        >
-                            Reload Page
-                        </button>
-                        {process.env.NODE_ENV === 'development' && (
+                        <div className="error-pizza">🍕</div>
+                        <h1 className="error-title">Oops! Something went wrong</h1>
+                        <p className="error-message">
+                            Looks like our pizza oven is having some trouble.
+                            Don't worry, we're working on fixing it!
+                        </p>
+                        <div className="error-actions">
+                            <button
+                                className="error-button primary"
+                                onClick={() => window.location.reload()}
+                            >
+                                🔄 Try Again
+                            </button>
+                            <button
+                                className="error-button secondary"
+                                onClick={() => window.location.href = '/'}
+                            >
+                                🏠 Go Home
+                            </button>
+                        </div>
+                        {import.meta.env.DEV && (
                             <details className="error-details">
-                                <summary>Error Details (Development Mode)</summary>
-                                <pre>{this.state.error?.toString()}</pre>
-                                <pre>{this.state.errorInfo?.componentStack}</pre>
+                                <summary>🔧 Technical Details (Dev Mode)</summary>
+                                <div className="error-stack">
+                                    <div className="error-section">
+                                        <h4>Error:</h4>
+                                        <pre>{this.state.error?.toString()}</pre>
+                                    </div>
+                                    <div className="error-section">
+                                        <h4>Component Stack:</h4>
+                                        <pre>{this.state.errorInfo?.componentStack}</pre>
+                                    </div>
+                                </div>
                             </details>
                         )}
                     </div>

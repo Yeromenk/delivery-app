@@ -1,4 +1,3 @@
--- Создание enum типов
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'UserRole') THEN
@@ -13,7 +12,6 @@ BEGIN
   END IF;
 END$$;
 
--- Таблица пользователей
 CREATE TABLE IF NOT EXISTS "User" (
                                       id SERIAL PRIMARY KEY,
                                       "fullName" VARCHAR(255) NOT NULL,
@@ -28,7 +26,6 @@ CREATE TABLE IF NOT EXISTS "User" (
                                       "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ensure phone column exists for existing installations
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -40,7 +37,6 @@ BEGIN
   END IF;
 END$$;
 
--- Таблица категорий
 CREATE TABLE IF NOT EXISTS "Category" (
                                           id SERIAL PRIMARY KEY,
                                           name VARCHAR(255) UNIQUE NOT NULL,
@@ -48,7 +44,6 @@ CREATE TABLE IF NOT EXISTS "Category" (
                                           "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица продуктов
 CREATE TABLE IF NOT EXISTS "Product" (
                                          id SERIAL PRIMARY KEY,
                                          name VARCHAR(255) NOT NULL,
@@ -58,7 +53,6 @@ CREATE TABLE IF NOT EXISTS "Product" (
                                          "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица вариантов продуктов
 CREATE TABLE IF NOT EXISTS "ProductItem" (
                                              id SERIAL PRIMARY KEY,
                                              price INTEGER NOT NULL,
@@ -69,7 +63,6 @@ CREATE TABLE IF NOT EXISTS "ProductItem" (
                                              "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица ингредиентов
 CREATE TABLE IF NOT EXISTS "Ingredient" (
                                             id SERIAL PRIMARY KEY,
                                             name VARCHAR(255) NOT NULL,
@@ -79,7 +72,6 @@ CREATE TABLE IF NOT EXISTS "Ingredient" (
                                             "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица корзины
 CREATE TABLE IF NOT EXISTS "Cart" (
                                       id SERIAL PRIMARY KEY,
                                       "userId" INTEGER UNIQUE REFERENCES "User"(id) ON DELETE SET NULL,
@@ -89,7 +81,6 @@ CREATE TABLE IF NOT EXISTS "Cart" (
                                       "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица элементов корзины
 CREATE TABLE IF NOT EXISTS "CartItem" (
                                           id SERIAL PRIMARY KEY,
                                           "cartId" INTEGER NOT NULL REFERENCES "Cart"(id) ON DELETE CASCADE,
@@ -99,7 +90,6 @@ CREATE TABLE IF NOT EXISTS "CartItem" (
                                           "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Таблица заказов
 CREATE TABLE IF NOT EXISTS "Order" (
                                        id SERIAL PRIMARY KEY,
                                        "userId" INTEGER REFERENCES "User"(id) ON DELETE SET NULL,
@@ -133,8 +123,6 @@ CREATE TABLE IF NOT EXISTS "StoryItem" (
     ON DELETE CASCADE
 );
 
-
--- Таблица кодов верификации
 CREATE TABLE IF NOT EXISTS "VerificationCode" (
                                                   id SERIAL PRIMARY KEY,
                                                   "userId" INTEGER NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
@@ -143,21 +131,18 @@ CREATE TABLE IF NOT EXISTS "VerificationCode" (
                                                   UNIQUE("userId", code)
 );
 
--- Связующая таблица для продуктов и ингредиентов (many-to-many)
 CREATE TABLE IF NOT EXISTS "_IngredientToProduct" (
                                                       "A" INTEGER NOT NULL REFERENCES "Ingredient"(id) ON DELETE CASCADE,
                                                       "B" INTEGER NOT NULL REFERENCES "Product"(id) ON DELETE CASCADE,
                                                       PRIMARY KEY ("A", "B")
 );
 
--- Связующая таблица для элементов корзины и ингредиентов (many-to-many)
 CREATE TABLE IF NOT EXISTS "_CartItemToIngredient" (
                                                        "A" INTEGER NOT NULL REFERENCES "CartItem"(id) ON DELETE CASCADE,
                                                        "B" INTEGER NOT NULL REFERENCES "Ingredient"(id) ON DELETE CASCADE,
                                                        PRIMARY KEY ("A", "B")
 );
 
--- Создание индексов для лучшей производительности
 CREATE INDEX IF NOT EXISTS "idx_user_email" ON "User"(email);
 CREATE INDEX IF NOT EXISTS "idx_product_category" ON "Product"("categoryId");
 CREATE INDEX IF NOT EXISTS "idx_cart_user" ON "Cart"("userId");

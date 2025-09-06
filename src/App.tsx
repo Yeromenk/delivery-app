@@ -3,8 +3,7 @@ import { createBrowserRouter, Outlet, RouterProvider, useLocation, useNavigation
 import Main from "./pages/main/Main.tsx"
 import NotFound from "./components/not-found-page/NotFound.tsx"
 import ErrorBoundary from "./components/error-boundary/ErrorBoundary.tsx";
-import ProductInfo from "./components/product-info/ProductInfo.tsx";
-import { useParams } from 'react-router-dom';
+import ProductPage from './pages/product/ProductPage.tsx';
 import CheckoutPage from "./pages/checkout/checkout-page.tsx";
 import Success from "./components/success/success.tsx";
 import Cancel from "./components/cancel/cancel.tsx";
@@ -36,16 +35,6 @@ const Layout = () => {
         </>
     )
 }
-
-const ProductPage = () => {
-    const { id } = useParams<{ id: string }>();
-
-    if (!id) {
-        return <NotFound />;
-    }
-
-    return <ProductInfo params={{ id }} />;
-};
 
 const router = createBrowserRouter([
     {
