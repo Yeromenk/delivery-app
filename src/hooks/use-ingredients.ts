@@ -1,3 +1,4 @@
+import axios from "axios";
 import {useEffect, useState} from "react";
 
 interface Ingredient {
@@ -15,10 +16,8 @@ export const useIngredients = () => {
         async function getIngredients() {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:5000/api/ingredients');
-                const data = await response.json();
-
-                setItems(data);
+                const response = await axios.get<Ingredient[]>('http://localhost:5000/api/ingredients');
+                setItems(response.data);
             } catch (error) {
                 console.error("[INGREDIENTS_FETCH_ERROR], ", error);
                 setItems([]);

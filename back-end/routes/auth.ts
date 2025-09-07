@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import pool from '../database/db';
 import type { Request, Response } from 'express';
 import dotenv from 'dotenv';
+import axios from 'axios';
+
 dotenv.config();
 
 const router = express.Router();
@@ -18,6 +20,15 @@ const OAUTH_GITHUB_CLIENT_SECRET = process.env.OAUTH_GITHUB_CLIENT_SECRET;
 const OAUTH_GITHUB_REDIRECT = process.env.OAUTH_GITHUB_REDIRECT || process.env.OAUTH_GITHUB_CLIENT_REDIRECT || 'http://localhost:5000/api/auth/github/callback';
 const COOKIE_NAME = process.env.COOKIE_NAME || 'token';
 const isProd = process.env.NODE_ENV === 'production';
+
+// Axios instance for external APIs
+const externalApiClient = axios.create({
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'ye-pizza-app'
+    }
+});
 
 // Inline validation helpers (pre-refactor style)
 function isValidEmail(email: string) {
@@ -59,8 +70,6 @@ async function findUserByProvider(provider: string, providerId: string) {
     const result = await pool.query('SELECT * FROM "User" WHERE provider = $1 AND "providerId" = $2 LIMIT 1', [provider, providerId]);
     return result.rows[0];
 }
-
-// Validation helpers defined inline (rolled back from modular refactor)
 
 // Register
 router.post('/register', async (req: Request, res: Response) => {
@@ -274,19 +283,23 @@ router.get('/google/callback', async (req: Request, res: Response) => {
             return res.redirect(`${FRONTEND_URL}/?error=oauth_no_code`);
         }
 
-        // Exchange code for tokens
-        const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
+        // Exchange code for tokens using axios
+        const tokenResponse = await externalApiClient.post('https://oauth2.googleapis.com/token', 
+            new URLSearchParams({
                 code,
                 client_id: OAUTH_GOOGLE_CLIENT_ID!,
                 client_secret: OAUTH_GOOGLE_CLIENT_SECRET!,
                 redirect_uri: OAUTH_GOOGLE_REDIRECT!,
                 grant_type: 'authorization_code',
             }),
-        } as any);
-        const tokenData = (await tokenResp.json()) as { id_token?: string };
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }
+        );
+
+        const tokenData = tokenResponse.data as { id_token?: string };
         const idToken = tokenData.id_token as string | undefined;
 
         if (!idToken) {
@@ -343,25 +356,37 @@ router.get('/github/callback', async (req: Request, res: Response) => {
             return res.redirect(`${FRONTEND_URL}/?error=oauth_no_code`);
         }
 
-        // Exchange code for access token
-        const tokenResp = await fetch('https://github.com/login/oauth/access_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                client_id: OAUTH_GITHUB_CLIENT_ID!,
-                client_secret: OAUTH_GITHUB_CLIENT_SECRET!,
-                code,
-                redirect_uri: OAUTH_GITHUB_REDIRECT!,
-            }),
-        } as any);
-        const tokenData = (await tokenResp.json()) as { access_token?: string };
+        // Exchange code for access token using axios
+        const tokenResponse = await externalApiClient.post('https://github.com/login/oauth/access_token', {
+            client_id: OAUTH_GITHUB_CLIENT_ID!,
+            client_secret: OAUTH_GITHUB_CLIENT_SECRET!,
+            code,
+            redirect_uri: OAUTH_GITHUB_REDIRECT!,
+        }, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        const tokenData = tokenResponse.data as { access_token?: string };
         const accessToken = tokenData.access_token as string | undefined;
         if (!accessToken) return res.redirect(`${FRONTEND_URL}/?error=oauth_no_token`);
 
-        const userResp = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${accessToken}`, 'User-Agent': 'ye-pizza-app' } } as any);
-        const ghUser = (await userResp.json()) as { id: number; login?: string; name?: string };
-        const emailsResp = await fetch('https://api.github.com/user/emails', { headers: { Authorization: `Bearer ${accessToken}`, 'User-Agent': 'ye-pizza-app' } } as any);
-        const emails = (await emailsResp.json()) as Array<{ email: string; primary?: boolean }>;
+        // Get user data using axios
+        const userResponse = await externalApiClient.get('https://api.github.com/user', {
+            headers: { 
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        const ghUser = userResponse.data as { id: number; login?: string; name?: string };
+
+        const emailsResponse = await externalApiClient.get('https://api.github.com/user/emails', {
+            headers: { 
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        const emails = emailsResponse.data as Array<{ email: string; primary?: boolean }>;
+        
         const primaryEmail = (emails?.find((e) => e.primary)?.email || emails?.[0]?.email || '').toLowerCase();
 
         const loginName = ghUser.name || ghUser.login || 'GitHub User';

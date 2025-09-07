@@ -2,9 +2,7 @@ import React from 'react';
 import CheckoutItemsDetails from "../checkout-items-details/checkout-items-details.tsx";
 import { ArrowRight, Package, Percent, Truck } from "lucide-react";
 import { Skeleton } from 'primereact/skeleton';
-
-const VAT = 15;
-const DELIVERY_PRICE = 50;
+import {  DELIVERY_PRICE, calculateVAT } from '../../constants/pricing';
 
 interface Props {
     totalAmount: number;
@@ -12,7 +10,7 @@ interface Props {
 }
 
 const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading }) => {
-    const vatPrice = (totalAmount * VAT) / 100;
+    const vatPrice = calculateVAT(totalAmount);
     const totalPrice = totalAmount + vatPrice + DELIVERY_PRICE;
 
     return (

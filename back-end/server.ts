@@ -9,6 +9,8 @@ import cartRoutes from './routes/cart';
 import searchRoutes from './routes/search';
 import createOrderRoutes from './routes/create-order';
 import storiesRoutes from './routes/stories';
+import stripeWebhookRoutes from './routes/stripe-webhook';
+import paymentSuccessRoutes from './routes/payment-success';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(cookieParser());
+app.use('/api/webhooks', express.raw({ type: 'application/json' }), stripeWebhookRoutes);
 app.use(express.json());
 
 async function checkDatabaseConnection() {
@@ -41,6 +44,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api', createOrderRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/stories', storiesRoutes);
+app.use('/api', paymentSuccessRoutes);
 
 async function startServer() {
     await checkDatabaseConnection();

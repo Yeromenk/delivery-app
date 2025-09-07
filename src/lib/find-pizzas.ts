@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export interface GetSearchParams {
     query?: string;
     sortBy?: string;
@@ -31,13 +33,13 @@ export const findPizzas = async (params: GetSearchParams) => {
         searchParams.append('priceFrom', minPrice.toString());
         searchParams.append('priceTo', maxPrice.toString());
 
-        const response = await fetch(`http://localhost:5000/api/search/categories?${searchParams}`);
+        const response = await axios.get(`http://localhost:5000/api/search/categories?${searchParams}`);
 
-        if (!response.ok) {
+        if (!response.data) {
             throw new Error('Failed to fetch categories');
         }
 
-        return await response.json();
+        return response.data;
 
     } catch (error) {
         console.error("[FIND_PIZZAS_ERROR]", error);

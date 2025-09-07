@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import './address-input.css';
 import { X, MapPin } from 'lucide-react';
+import axios from 'axios';
 
 interface Props {
     name: string;
@@ -40,17 +41,15 @@ export const AddressInput: React.FC<Props> = ({ name, placeholder, className }) 
         try {
             const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&countrycodes=cz&q=${encodeURIComponent(query)}`;
 
-            const response = await fetch(url, {
-                headers: {
-                    'User-Agent': 'YourAppName/1.0 (your-email@example.com)'
-                }
+            const response = await axios.get(url, {
+                timeout: 5000,
             });
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
+            const data = response.data;
 
             setSuggestions(data.map((item: any) => {
                 const address = item.address || {};

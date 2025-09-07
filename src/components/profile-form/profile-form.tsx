@@ -7,6 +7,7 @@ import toast from "react-hot-toast"
 import { FormInput } from "../../form-components/form-input"
 import { FormPhoneInput } from "../../form-components/form-phone-input"
 import axios from 'axios';
+import type { ProfileUpdatePayload } from '../../types/api.types';
 import './profile-form.css';
 
 const profileSchema = z.object({
@@ -15,7 +16,7 @@ const profileSchema = z.object({
     phone: z
         .string()
         .optional()
-        .refine((v) => !v || /^(\+?[\d\s()-]+)$/.test(v), { message: 'Invalid phone number' }),
+        .refine((v) => !v || /^\+420[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}$/.test(v), { message: 'Invalid Czech phone number format. Use format: +420 XXX XXX XXX or +420XXXXXXXXX' }),
     password: z.string().min(6, 'Password must be at least 6 characters').optional().or(z.literal('')),
     confirmPassword: z.string().optional().or(z.literal('')),
 }).refine((data) => {
@@ -61,7 +62,7 @@ export const ProfileForm = () => {
 
     const onSubmit = async (values: ProfileFormValues) => {
         try {
-            const payload: any = {
+            const payload: ProfileUpdatePayload = {
                 fullName: values.fullName,
                 email: values.email,
                 phone: values.phone,

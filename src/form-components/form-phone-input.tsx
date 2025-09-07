@@ -19,7 +19,7 @@ export const FormPhoneInput: React.FC<Props> = ({
     required,
     placeholder,
     className,
-    mask,
+    mask = "+420 000 000 000", 
 }) => {
     const {
         control,
@@ -48,27 +48,15 @@ export const FormPhoneInput: React.FC<Props> = ({
                     name={name}
                     control={control}
                     render={({ field }) => (
-                        mask ? (
-                            <IMaskInput
-                                {...field}
-                                mask={mask}
-                                lazy={false}
-                                overwrite={true}
-                                placeholder={placeholder || "Phone"}
-                                className={`form-input__field ${className || ""}`}
-                                onAccept={(val) => field.onChange(val)}
-                            />
-                        ) : (
-                            <input
-                                {...field}
-                                type="tel"
-                                inputMode="tel"
-                                autoComplete="tel"
-                                placeholder={placeholder || "Enter phone number"}
-                                className={`form-input__field ${className || ""}`}
-                                onChange={(e) => field.onChange(e.target.value)}
-                            />
-                        )
+                        <IMaskInput
+                            {...field}
+                            mask={mask}
+                            lazy={false}
+                            overwrite={false}
+                            placeholder={placeholder || "Phone"}
+                            className={`form-input__field ${className || ""}`}
+                            onAccept={(val) => field.onChange(val)}
+                        />
                     )}
                 />
 

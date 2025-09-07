@@ -3,7 +3,11 @@ import pool from '../database/db';
 import cookie from 'cookie';
 import { SendEmail } from '../lib/send-email';
 const router = Router();
-import {stripe} from '../lib/stripe';
+import { stripe } from '../lib/stripe';
+
+// Pricing constants
+const VAT_RATE = 15; // 15%
+const DELIVERY_PRICE = 50; // 50 CZK
 
 interface CreateOrderBody {
     firstName: string;
@@ -123,6 +127,11 @@ router.post('/orders', async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Cart has no items' });
         }
 
+        // Calculate total amount including VAT and delivery
+        const orderItemsTotal = cart.totalAmount;
+        const orderVatAmount = Math.round((orderItemsTotal * VAT_RATE) / 100);
+        const totalAmountWithVATAndDelivery = orderItemsTotal + orderVatAmount + DELIVERY_PRICE;
+
         const fullName = `${firstName} ${lastName}`.trim();
         const orderResult = await client.query(
             `
@@ -135,7 +144,7 @@ router.post('/orders', async (req: Request, res: Response) => {
             [
                 cart.token,
                 cart.userId || null,
-                cart.totalAmount,
+                totalAmountWithVATAndDelivery,
                 'PENDING',
                 JSON.stringify(serializedItems),
                 fullName,
@@ -156,10 +165,12 @@ router.post('/orders', async (req: Request, res: Response) => {
         );
 
         // Stripe Checkout Session
-        const session = await stripe.checkout.sessions.create({
-            mode: 'payment',
-            payment_method_types: ['card'],
-            line_items: serializedItems.map((item) => ({
+        const itemsTotal = serializedItems.reduce((sum, item) => sum + (Number(item.basePrice) * item.quantity), 0);
+        const vatAmount = Math.round((itemsTotal * VAT_RATE) / 100);
+
+        const lineItems = [
+            // Add all products
+            ...serializedItems.map((item) => ({
                 quantity: item.quantity,
                 price_data: {
                     currency: 'czk',
@@ -170,6 +181,36 @@ router.post('/orders', async (req: Request, res: Response) => {
                     unit_amount: Math.round(Number(item.basePrice) * 100),
                 },
             })),
+            // Add VAT as separate line item
+            {
+                quantity: 1,
+                price_data: {
+                    currency: 'czk',
+                    product_data: {
+                        name: `VAT (${VAT_RATE}%)`,
+                        description: 'Value Added Tax',
+                    },
+                    unit_amount: vatAmount * 100,
+                },
+            },
+           
+            {
+                quantity: 1,
+                price_data: {
+                    currency: 'czk',
+                    product_data: {
+                        name: 'Delivery',
+                        description: 'Delivery service',
+                    },
+                    unit_amount: DELIVERY_PRICE * 100,
+                },
+            },
+        ];
+
+        const session = await stripe.checkout.sessions.create({
+            mode: 'payment',
+            payment_method_types: ['card'],
+            line_items: lineItems,
             success_url: `http://localhost:5173/success?orderId=${order.id}`,
             cancel_url: `http://localhost:5173/cancel?orderId=${order.id}`,
             metadata: { orderId: order.id.toString() },
@@ -186,11 +227,11 @@ router.post('/orders', async (req: Request, res: Response) => {
         try {
             await SendEmail(
                 email,
-                `App-pizza / Pay for your order #${order.id}`,
+                `Ye-pizza / Pay for your order #${order.id}`,
                 {
                     orderId: order.id,
                     totalAmount: Number(order.totalAmount),
-                    paymentUrl: `http://localhost:5173/payment/${order.id}`,
+                    paymentUrl: session.url || `http://localhost:5173/checkout`,
                 }
             );
             console.log(`Email sent successfully to ${email} for order #${order.id}`);

@@ -14,7 +14,7 @@ export const formRegisterSchemas = formLoginSchemas.merge(
         phone: z
             .string()
             .min(7, { message: 'Phone is required' })
-            .regex(/^\+?[\d\s()-]+$/, { message: 'Invalid phone number' }),
+            .regex(/^\+420[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}$/, { message: 'Invalid Czech phone number format. Use format: +420 XXX XXX XXX or +420XXXXXXXXX' }),
         confirmPassword: passwordSchema,
     })
 ).refine((data) => data.password === data.confirmPassword, {

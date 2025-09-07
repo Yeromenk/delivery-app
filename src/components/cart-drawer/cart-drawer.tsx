@@ -94,14 +94,11 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                                     <CartDrawerItem
                                         id={item.id}
                                         imageUrl={item.imageUrl}
-                                        details={
-                                            item.pizzaSize && item.pizzaType ?
-                                                getCartItemsDetails(
-                                                    item.ingredients,
-                                                    item.pizzaType as PizzaType,
-                                                    item.pizzaSize as PizzaSize,
-                                                ) : ''
-                                        }
+                                        details={getCartItemsDetails(
+                                            item.ingredients,
+                                            item.pizzaType as PizzaType,
+                                            item.pizzaSize as PizzaSize,
+                                        )}
                                         name={item.name}
                                         disabled={item.disabled}
                                         price={item.price}

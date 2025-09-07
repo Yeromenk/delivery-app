@@ -28,11 +28,10 @@ const SearchInput = () => {
     useEffect(() => {
         const fetchDefaultProducts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/products');
+                const response = await axios.get('http://localhost:5000/api/products');
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setDefaultProducts(data.slice(0, 5));
+                if (response.status === 200) {
+                    setDefaultProducts(response.data.slice(0, 5));
                 } else {
                     console.error('Failed to fetch products:', response.statusText);
                 }
