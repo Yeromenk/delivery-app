@@ -57,7 +57,14 @@ function setAuthCookie(res: Response, payload: object) {
     });
 }
 
-function sanitizeUser(u: any) {
+function sanitizeUser(u: {
+    id: number;
+    fullName: string;
+    email: string;
+    phone?: string;
+    role: string;
+    provider?: string
+}) {
     return { id: u.id, fullName: u.fullName, email: u.email, phone: u.phone, role: u.role, provider: u.provider };
 }
 
@@ -189,7 +196,7 @@ router.put('/me', async (req: Request, res: Response) => {
         };
 
         const updates: string[] = [];
-        const values: any[] = [];
+        const values: (string | number)[] = [];
 
         // Validate and queue updates
         if (typeof fullName === 'string') {
@@ -284,7 +291,7 @@ router.get('/google/callback', async (req: Request, res: Response) => {
         }
 
         // Exchange code for tokens using axios
-        const tokenResponse = await externalApiClient.post('https://oauth2.googleapis.com/token', 
+        const tokenResponse = await externalApiClient.post('https://oauth2.googleapis.com/token',
             new URLSearchParams({
                 code,
                 client_id: OAUTH_GOOGLE_CLIENT_ID!,
@@ -374,19 +381,19 @@ router.get('/github/callback', async (req: Request, res: Response) => {
 
         // Get user data using axios
         const userResponse = await externalApiClient.get('https://api.github.com/user', {
-            headers: { 
+            headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         });
         const ghUser = userResponse.data as { id: number; login?: string; name?: string };
 
         const emailsResponse = await externalApiClient.get('https://api.github.com/user/emails', {
-            headers: { 
+            headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         });
         const emails = emailsResponse.data as Array<{ email: string; primary?: boolean }>;
-        
+
         const primaryEmail = (emails?.find((e) => e.primary)?.email || emails?.[0]?.email || '').toLowerCase();
 
         const loginName = ghUser.name || ghUser.login || 'GitHub User';

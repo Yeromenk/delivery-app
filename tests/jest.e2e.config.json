@@ -1,0 +1,11 @@
+{
+  "displayName": "E2E Tests",
+  "testEnvironment": "node",
+  "testMatch": [
+    "<rootDir>/tests/e2e/**/*.test.{js,ts}"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/tests/e2e/setup.ts"],
+  "testTimeout": 30000,
+  "collectCoverage": false
+}
+

@@ -64,7 +64,7 @@ const ChoosePizzaForm: React.FC<Props> = ({
         if (!isAvailableSize && availableSize) {
             setSize(Number(availableSize.value) as PizzaSize);
         }
-    }, [type])
+    }, [type, availablePizzaSizes, size])
 
     return (
         <div className="choose-pizza-form">

@@ -3,9 +3,6 @@ import pool from '../database/db';
 
 const router = express.Router();
 
-// Health check (optional, helps verify 200 quickly)
-// router.get('/health', (_req, res) => res.json({ ok: true }));
-
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const { rows } = await pool.query(`

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import './success.css'
 import { CheckCircle } from "lucide-react";
+import { API_ENDPOINTS } from '../../lib/api-config';
 
 const Success = () => {
     const [searchParams] = useSearchParams();
@@ -14,7 +15,7 @@ const Success = () => {
         const confirmPayment = async () => {
             if (orderId && !emailSent) {
                 try {
-                    await axios.post('http://localhost:5000/api/payment-success', {
+                    await axios.post(API_ENDPOINTS.paymentSuccess, {
                         orderId: parseInt(orderId)
                     });
                     setEmailSent(true);

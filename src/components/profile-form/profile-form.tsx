@@ -58,7 +58,7 @@ export const ProfileForm = () => {
                 console.log("[USER_DATA_ERROR], ", error);
             }
         })();
-    }, []);
+    }, [form]);
 
     const onSubmit = async (values: ProfileFormValues) => {
         try {

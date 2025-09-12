@@ -1,5 +1,6 @@
 import axios from "axios";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { API_ENDPOINTS } from "../lib/api-config";
 
 interface Ingredient {
     id: number;
@@ -16,7 +17,7 @@ export const useIngredients = () => {
         async function getIngredients() {
             try {
                 setLoading(true);
-                const response = await axios.get<Ingredient[]>('http://localhost:5000/api/ingredients');
+                const response = await axios.get<Ingredient[]>(API_ENDPOINTS.ingredients);
                 setItems(response.data);
             } catch (error) {
                 console.error("[INGREDIENTS_FETCH_ERROR], ", error);

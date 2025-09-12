@@ -68,7 +68,12 @@ const ProductPage: React.FC = () => {
                                 imageUrl={product.imageUrl}
                                 name={product.name}
                                 ingredients={product.ingredients}
-                                items={product.items as any}
+                                items={product.items as Array<{
+                                    id: number;
+                                    price: number;
+                                    size?: 20 | 30 | 40;
+                                    pizzaType?: 1 | 2;
+                                }>}
                                 onClickButton={handleAddToCart}
                                 loading={loading}
                             />

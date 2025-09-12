@@ -74,7 +74,7 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                     ) : !totalAmount ? (
                         <div className="cart-drawer-empty">
                             <img
-                                src="../../../public/images/empty-box.png"
+                                src="/images/empty-box.png"
                                 width={120}
                                 height={120}
                                 alt="Empty cart"

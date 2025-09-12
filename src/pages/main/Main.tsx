@@ -75,7 +75,12 @@ const Main = () => {
                         name: selectedProduct.name,
                         imageUrl: selectedProduct.imageUrl,
                         category: 'category',
-                        items: selectedProduct.items as any,
+                        items: selectedProduct.items as Array<{
+                            id: number;
+                            price: number;
+                            size?: 20 | 30 | 40;
+                            pizzaType?: 1 | 2;
+                        }>,
                         ingredients: selectedProduct.ingredients
                     }}
                     onClose={closeModal}

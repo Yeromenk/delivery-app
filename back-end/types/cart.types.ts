@@ -21,15 +21,3 @@ export interface CartItemDto {
         imageUrl: string;
     }>;
 }
-
-export interface CartDto {
-    cart_id: number;
-    totalAmount: number;
-    token: string;
-    items: CartItemDto[];
-}
-
-export interface CreateCartItemValues {
-    productItemId: number;
-    ingredients?: number[];
-}

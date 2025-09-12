@@ -1,0 +1,17 @@
+{
+  "projects": [
+    "<rootDir>/tests/jest.unit.config.json",
+    "<rootDir>/tests/jest.integration.config.json"
+  ],
+  "coverageDirectory": "coverage",
+  "collectCoverage": true,
+  "coverageReporters": ["text-summary", "lcov", "html"],
+  "coverageThreshold": {
+    "global": {
+      "branches": 70,
+      "functions": 70,
+      "lines": 70,
+      "statements": 70
+    }
+  }
+}

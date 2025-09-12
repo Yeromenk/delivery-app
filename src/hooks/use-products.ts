@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { findPizzas, type GetSearchParams } from "../lib/find-pizzas.ts";
 import axios from "axios";
+import { API_ENDPOINTS } from "../lib/api-config";
 
 export interface Ingredient {
     id: number;
@@ -55,7 +56,7 @@ export const useProducts = (filters?: GetSearchParams) => {
                 if (hasActiveFilters) {
                     categoriesData = await findPizzas(filters);
                 } else {
-                    const response = await axios.get('http://localhost:5000/api/categories');
+                    const response = await axios.get(API_ENDPOINTS.categories);
                     if (response.status === 200) {
                         categoriesData = response.data;
                     } else {

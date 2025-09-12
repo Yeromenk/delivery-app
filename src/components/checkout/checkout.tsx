@@ -76,7 +76,7 @@ const Checkout = () => {
             mounted = false;
             window.removeEventListener('auth:success', onAuth as EventListener);
         };
-    }, [])
+    }, [form])
 
     const onSubmit = useCallback(
         async (data: CheckoutFormValues) => {

@@ -22,7 +22,6 @@ router.get('/categories', async (req, res) => {
             sortBy
         } = req.query;
 
-        // Правильная типизация для query параметров
         const sizesArray = sizes && typeof sizes === 'string' ? sizes.split(',').map(Number) : null;
         const pizzaTypesArray = pizzasTypes && typeof pizzasTypes === 'string' ? pizzasTypes.split(',').map(Number) : null;
         const ingredientsArray = ingredients && typeof ingredients === 'string' ? ingredients.split(',').map(Number) : null;
@@ -30,17 +29,15 @@ router.get('/categories', async (req, res) => {
         const maxPrice = Number(priceTo) || 1000;
 
         const whereConditions: string[] = [];
-        const params: any[] = [];
+        const params: (string | number | number[])[] = [];
         let paramCounter = 1;
 
-        // Фильтр по названию продукта
         if (query && typeof query === 'string') {
             whereConditions.push(`p.name ILIKE $${paramCounter}`);
             params.push(`%${query}%`);
             paramCounter++;
         }
 
-        // Фильтр по размерам и типам пиццы
         if (sizesArray || pizzaTypesArray) {
             const itemConditions: string[] = [];
 
@@ -65,7 +62,6 @@ router.get('/categories', async (req, res) => {
             params.push(minPrice, maxPrice);
             paramCounter += 2;
         } else {
-            // Фильтр только по цене
             whereConditions.push(`EXISTS (
                 SELECT 1 FROM "ProductItem" pi 
                 WHERE pi."productId" = p.id 
@@ -75,7 +71,6 @@ router.get('/categories', async (req, res) => {
             paramCounter += 2;
         }
 
-        // Фильтр по ингредиентам
         if (ingredientsArray) {
             whereConditions.push(`EXISTS (
                 SELECT 1 FROM "_IngredientToProduct" itp 
@@ -121,22 +116,23 @@ router.get('/categories', async (req, res) => {
 
         const result = await pool.query(queryText, params);
 
-        // Получаем детали продуктов
         const categoriesWithDetails = await Promise.all(
-            result.rows.map(async (category: any) => {
+            result.rows.map(async (category: {
+                category_id: number;
+                category_name: string;
+                products: Product[]
+            }) => {
                 const categoryProducts = await Promise.all(
                     category.products.map(async (product: Product) => {
-                        // Получаем items для продукта
                         const itemsQuery = `
                             SELECT id, price, size, "pizzaType"
                             FROM "ProductItem"
                             WHERE "productId" = $1
                               AND price BETWEEN $2 AND $3
-                            ORDER BY price ASC
+                            ORDER BY price
                         `;
                         const itemsResult = await pool.query(itemsQuery, [product.id, minPrice, maxPrice]);
 
-                        // Получаем ингредиенты для продукта
                         const ingredientsQuery = `
                             SELECT i.id, i.name, i.price, i."imageUrl"
                             FROM "Ingredient" i

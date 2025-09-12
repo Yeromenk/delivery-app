@@ -1,0 +1,23 @@
+{
+  "displayName": "Integration Tests",
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "rootDir": "../",
+  "setupFilesAfterEnv": ["<rootDir>/tests/integration/setup.ts"],
+  "transform": {
+    "^.+\\.ts$": ["ts-jest", {
+      "tsconfig": "back-end/tsconfig.json"
+    }]
+  },
+  "testMatch": [
+    "<rootDir>/tests/integration/**/*.test.ts"
+  ],
+  "collectCoverageFrom": [
+    "back-end/routes/**/*.{ts}",
+    "back-end/lib/**/*.{ts}",
+    "!back-end/**/*.d.ts"
+  ],
+  "coverageDirectory": "coverage/integration",
+  "coverageReporters": ["text", "lcov", "html"],
+  "testTimeout": 10000
+}

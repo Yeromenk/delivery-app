@@ -1,5 +1,6 @@
 import pool from '../database/db';
-import { calcCartItemTotalPrice } from './calc-cart-item-total-price'
+import { calcCartItemTotalPrice } from './calc-cart-item-total-price';
+import type { CartItemDto } from '../types/cart.types';
 
 export const updateCartTotalAmount = async (token: string) => {
     const client = await pool.connect();
@@ -63,7 +64,7 @@ export const updateCartTotalAmount = async (token: string) => {
         const cart = result.rows[0];
 
         // Calculate total amount
-        const totalAmount = cart.items.reduce((acc: number, item: any) => {
+        const totalAmount = cart.items.reduce((acc: number, item: CartItemDto) => {
             return acc + calcCartItemTotalPrice(item);
         }, 0);
 

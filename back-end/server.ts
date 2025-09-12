@@ -17,8 +17,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+    'http://localhost:5173',  
+    'http://localhost',      
+    'http://localhost:80',    
+    process.env.FRONTEND_URL  
+].filter((origin): origin is string => typeof origin === 'string');
+
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true,
 }));
 app.use(cookieParser());

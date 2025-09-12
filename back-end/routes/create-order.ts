@@ -5,9 +5,12 @@ import { SendEmail } from '../lib/send-email';
 const router = Router();
 import { stripe } from '../lib/stripe';
 
-// Pricing constants
-const VAT_RATE = 15; // 15%
-const DELIVERY_PRICE = 50; // 50 CZK
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const SUCCESS_URL = process.env.STRIPE_SUCCESS_URL || 'https://example.com/success';
+const CANCEL_URL = process.env.STRIPE_CANCEL_URL || 'https://example.com/cancel';
+
+const VAT_RATE = 15; 
+const DELIVERY_PRICE = 50; 
 
 interface CreateOrderBody {
     firstName: string;
@@ -193,7 +196,7 @@ router.post('/orders', async (req: Request, res: Response) => {
                     unit_amount: vatAmount * 100,
                 },
             },
-           
+
             {
                 quantity: 1,
                 price_data: {
@@ -211,8 +214,8 @@ router.post('/orders', async (req: Request, res: Response) => {
             mode: 'payment',
             payment_method_types: ['card'],
             line_items: lineItems,
-            success_url: `http://localhost:5173/success?orderId=${order.id}`,
-            cancel_url: `http://localhost:5173/cancel?orderId=${order.id}`,
+            success_url: `${SUCCESS_URL}?orderId=${order.id}`,
+            cancel_url: `${CANCEL_URL}?orderId=${order.id}`,
             metadata: { orderId: order.id.toString() },
         });
 
@@ -231,7 +234,7 @@ router.post('/orders', async (req: Request, res: Response) => {
                 {
                     orderId: order.id,
                     totalAmount: Number(order.totalAmount),
-                    paymentUrl: session.url || `http://localhost:5173/checkout`,
+                    paymentUrl: session.url || `${FRONTEND_URL}/checkout`,
                 }
             );
             console.log(`Email sent successfully to ${email} for order #${order.id}`);

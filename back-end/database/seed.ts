@@ -26,7 +26,7 @@ const randomPrice = (min: number, max: number): number => {
 };
 
 const generateProductItem = (productId: number, pizzaType?: 1 | 2, size?: 20 | 30 | 40) => {
-    let basePrice = randomPrice(180, 450); // Base price in CZK
+    let basePrice = randomPrice(180, 450); 
 
     // Size multiplier
     if (size === 30) basePrice += 50;
@@ -37,7 +37,7 @@ const generateProductItem = (productId: number, pizzaType?: 1 | 2, size?: 20 | 3
 
     return {
         productId,
-        price: basePrice, // Убрать * 100
+        price: basePrice, 
         pizzaType,
         size
     };
@@ -191,7 +191,7 @@ async function up() {
                 basePrice = randomPrice(90, 180);
             }
 
-            await client.query(productItemQuery, [basePrice, null, null, productId]); // Убрать * 100
+            await client.query(productItemQuery, [basePrice, null, null, productId]); 
         }
 
         // Add carts

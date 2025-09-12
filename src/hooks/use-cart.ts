@@ -24,8 +24,8 @@ export const useCart = (): ReturnProps => {
     } = useCartStore();
 
     useEffect(() => {
-        fetchCartItems();
-    }, []);
+        fetchCartItems().then(r => r);
+    }, [fetchCartItems]);
 
     return {
         totalAmount,

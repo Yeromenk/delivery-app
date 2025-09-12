@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import pool from '../database/db';
 import { stripe } from '../lib/stripe';
 import { SendPaymentSuccessEmail, SendPaymentFailedEmail } from '../lib/send-email';
+import type Stripe from 'stripe';
 
 const router = Router();
 
@@ -20,8 +21,9 @@ router.post('/stripe-webhook', async (req: Request, res: Response) => {
     try {
         // Verify webhook signature
         event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    } catch (err: any) {
-        console.error('Webhook signature verification failed:', err.message);
+    } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        console.error('Webhook signature verification failed:', errorMessage);
         return res.status(400).json({ error: 'Webhook signature verification failed' });
     }
 
@@ -30,11 +32,13 @@ router.post('/stripe-webhook', async (req: Request, res: Response) => {
     try {
         switch (event.type) {
             case 'checkout.session.completed':
-                await handlePaymentSuccess(event.data.object, client);
+                await handlePaymentSuccess(event.data.object as Stripe.Checkout.Session, client);
                 break;
             case 'checkout.session.expired':
+                await handlePaymentFailure(event.data.object as Stripe.Checkout.Session, client);
+                break;
             case 'payment_intent.payment_failed':
-                await handlePaymentFailure(event.data.object, client);
+                console.log('Payment intent failed:', event.data.object.id);
                 break;
             default:
                 console.log(`Unhandled event type: ${event.type}`);
@@ -49,7 +53,10 @@ router.post('/stripe-webhook', async (req: Request, res: Response) => {
     }
 });
 
-const handlePaymentSuccess = async (session: any, client: any) => {
+const handlePaymentSuccess = async (
+    session: Stripe.Checkout.Session,
+    client: { query: (text: string, params?: unknown[]) => Promise<{ rows: unknown[] }> }
+) => {
     const orderId = session.metadata?.orderId;
 
     if (!orderId) {
@@ -58,7 +65,7 @@ const handlePaymentSuccess = async (session: any, client: any) => {
     }
 
     try {
-        // Update order status to paid
+        // Update order status to pay
         const updateResult = await client.query(
             `UPDATE "Order" SET status = 'SUCCEEDED', "updatedAt" = NOW() WHERE id = $1 RETURNING *`,
             [orderId]
@@ -69,7 +76,12 @@ const handlePaymentSuccess = async (session: any, client: any) => {
             return;
         }
 
-        const order = updateResult.rows[0];
+        const order = updateResult.rows[0] as {
+            id: number;
+            email: string;
+            totalAmount: string;
+            status: string
+        };
 
         // Send success email
         await SendPaymentSuccessEmail(order.email, {
@@ -85,7 +97,10 @@ const handlePaymentSuccess = async (session: any, client: any) => {
     }
 };
 
-const handlePaymentFailure = async (session: any, client: any) => {
+const handlePaymentFailure = async (
+    session: Stripe.Checkout.Session,
+    client: { query: (text: string, params?: unknown[]) => Promise<{ rows: unknown[] }> }
+) => {
     const orderId = session.metadata?.orderId;
 
     if (!orderId) {
@@ -94,7 +109,7 @@ const handlePaymentFailure = async (session: any, client: any) => {
     }
 
     try {
-        // Update order status to failed
+        // Update order status to fail
         const updateResult = await client.query(
             `UPDATE "Order" SET status = 'CANCELLED', "updatedAt" = NOW() WHERE id = $1 RETURNING *`,
             [orderId]
@@ -105,7 +120,12 @@ const handlePaymentFailure = async (session: any, client: any) => {
             return;
         }
 
-        const order = updateResult.rows[0];
+        const order = updateResult.rows[0] as {
+            id: number;
+            email: string;
+            totalAmount: string;
+            status: string
+        };
 
         // Send failure email
         await SendPaymentFailedEmail(order.email, {

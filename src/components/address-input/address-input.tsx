@@ -51,7 +51,26 @@ export const AddressInput: React.FC<Props> = ({ name, placeholder, className }) 
 
             const data = response.data;
 
-            setSuggestions(data.map((item: any) => {
+            setSuggestions(data.map((item: {
+                address?: {
+                    house_number?: string;
+                    road?: string;
+                    street?: string;
+                    suburb?: string;
+                    neighbourhood?: string;
+                    quarter?: string;
+                    city?: string;
+                    town?: string;
+                    village?: string;
+                    municipality?: string;
+                    state?: string;
+                    country?: string;
+                };
+                display_name?: string;
+                place_id?: string;
+                lat?: string;
+                lon?: string;
+            }) => {
                 const address = item.address || {};
 
                 const mainParts = [

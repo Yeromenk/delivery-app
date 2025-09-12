@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../lib/api-config';
 
 interface Product {
     id: number;
@@ -28,7 +29,7 @@ const SearchInput = () => {
     useEffect(() => {
         const fetchDefaultProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/products');
+                const response = await axios.get(API_ENDPOINTS.products);
 
                 if (response.status === 200) {
                     setDefaultProducts(response.data.slice(0, 5));
@@ -53,7 +54,7 @@ const SearchInput = () => {
         const timeoutId = setTimeout(async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5000/api/products/search?query=${encodeURIComponent(searchQuery)}`);
+                const response = await axios.get(API_ENDPOINTS.productSearch(searchQuery));
 
                 if (response.status === 200) {
                     const data = response.data;

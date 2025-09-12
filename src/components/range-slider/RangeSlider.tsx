@@ -18,7 +18,7 @@ const RangeSlider = React.forwardRef<HTMLDivElement, RangeSliderProps>(
             step,
             formatLabel = (value) => value.toString(),
             value = [min, max],
-            onValueChange = () => {}
+            onValueChange = () => { }
         }: RangeSliderProps,
         ref
     ) => {
@@ -75,7 +75,7 @@ const RangeSlider = React.forwardRef<HTMLDivElement, RangeSliderProps>(
                     window.removeEventListener('mouseup', handleMouseUp);
                 };
             }
-        }, [dragging, localValues]);
+        }, [dragging, localValues, handleMouseMove]);
 
         const handleValueChange = (newValues: number[]) => {
             setLocalValues(newValues);

@@ -1,0 +1,31 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"],
+  "globals": {
+    "import.meta": {
+      "env": {
+        "VITE_API_URL": "http://localhost:5000"
+      }
+    }
+  },
+  "moduleNameMapper": {
+    "\\.(css|less|scss|sass)$": "<rootDir>/src/__mocks__/styleMock.js"
+  },
+  "transform": {
+    "^.+\\.(ts|tsx)$": ["ts-jest", {
+      "tsconfig": "tsconfig.test.json"
+    }]
+  },
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
+  "testMatch": [
+    "<rootDir>/src/**/*.test.{ts,tsx,js,jsx}",
+    "<rootDir>/src/**/*.spec.{ts,tsx,js,jsx}"
+  ],
+  "collectCoverageFrom": [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/main.tsx",
+    "!src/vite-env.d.ts"
+  ]
+}

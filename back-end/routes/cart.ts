@@ -77,7 +77,7 @@ router.get('/cart', async (req, res) => {
         res.json(result.rows[0]);
     } catch (error) {
         console.error('[CART_GET] Server error:', error);
-        res.status(500).json({message: 'Не удалось получить корзину'});
+        res.status(500).json({message: 'Could not retrieve cart'});
     }
 });
 
@@ -285,7 +285,7 @@ router.post('/cart', async (req, res) => {
         res.status(201).json(updatedCart);
     } catch (error) {
         console.error('[CART_POST] Server error:', error);
-        res.status(500).json({message: 'Не удалось создать товар в корзине'});
+        res.status(500).json({message: 'Could not add item to cart'});
     }
 });
 
