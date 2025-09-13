@@ -75,9 +75,9 @@ const ChooseProductModal: React.FC<Props> = ({ product, onClose }) => {
     };
 
     return (
-        <div className="modal-overlay" onClick={handleOverlayClick}>
-            <div className="modal-content">
-                <button className="modal-close" onClick={onClose}>
+        <div className="modal-overlay" onClick={handleOverlayClick} data-testid="modal-overlay">
+            <div className="modal-content" data-testid="product-modal">
+                <button className="modal-close" onClick={onClose} data-testid="close-modal">
                     ×
                 </button>
                 <div className="choose-product-modal">

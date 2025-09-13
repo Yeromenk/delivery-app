@@ -11,16 +11,16 @@ const CartButton = () => {
     return (
         <CartDrawer>
             <div className="cart">
-                <button className={`btn-cart${loading ? ' loading' : ''}`} aria-label="Open cart">
+                <button className={`btn-cart${loading ? ' loading' : ''}`} aria-label="Open cart" data-testid="cart-button">
                     {loading ? (
                         <div className="cart-spinner" aria-hidden="true" />
                     ) : (
                         <>
-                            <b>{totalAmount} CZK</b>
+                            <b data-testid="cart-total-amount">{totalAmount} CZK</b>
                             <span className="cart-span" />
                             <div className="shopping-cart">
                                 <ShoppingCart className="shopping-cart-icon" strokeWidth={2} />
-                                <b>{items.length}</b>
+                                <b data-testid="cart-counter">{items.length}</b>
                             </div>
                             <ArrowRight className="arrow-right" />
                         </>

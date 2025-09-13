@@ -1,0 +1,36 @@
+{
+  "testUser": {
+    "email": "test@example.com",
+    "password": "password123",
+    "firstName": "Jan",
+    "lastName": "Novák",
+    "phone": "+420123456789",
+    "address": "Testovací ulice 123",
+    "city": "Praha",
+    "zipCode": "10000"
+  },
+  "testProducts": [
+    {
+      "name": "Маргарита",
+      "category": "Пиццы",
+      "price": 290
+    },
+    {
+      "name": "Пепперони",
+      "category": "Пиццы",
+      "price": 350
+    }
+  ],
+  "testOrder": {
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 2,
+        "size": "Средняя"
+      }
+    ],
+    "totalAmount": 580,
+    "comment": "Тестовый заказ для E2E тестов"
+  }
+}
+

@@ -76,7 +76,7 @@ export const ProductGroupList: React.FC<Props> = ({
         <div ref={intersectionRef} id={title?.toLowerCase().replace(/\s+/g, '-') || `category-${categoryId}`}>
             <h2>{title}</h2>
 
-            <div className={`items ${listClassName || ""}`}>
+            <div className={`items ${listClassName || ""}`} data-testid="products-grid">
                 {items.map((item) => (
                     <ProductCard
                         key={item.id}

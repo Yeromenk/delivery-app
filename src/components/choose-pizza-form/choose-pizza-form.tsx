@@ -71,8 +71,8 @@ const ChoosePizzaForm: React.FC<Props> = ({
             <ProductImage imageUrl={imageUrl} size={size} />
 
             <div className="choose-pizza">
-                <h1>{name}</h1>
-                <p>{textDetails}</p>
+                <h1 data-testid="product-name">{name}</h1>
+                <p data-testid="product-details">{textDetails}</p>
 
                 <div className="variants-section">
                     <GroupVariants
@@ -88,7 +88,7 @@ const ChoosePizzaForm: React.FC<Props> = ({
                     />
                 </div>
 
-                <div className="ingredients">
+                <div className="ingredients" data-testid="product-ingredients">
                     <div className="ingredients-section">
                         {ingredients.map((ingredient) => (
                             <Ingredients
@@ -107,6 +107,7 @@ const ChoosePizzaForm: React.FC<Props> = ({
                     className="choose-pizza-btn"
                     onClick={handleClickAdd}
                     disabled={loading}
+                    data-testid="add-to-cart-modal"
                 >
                     {loading ? (
                         <div className="loading-spinner">
@@ -114,7 +115,7 @@ const ChoosePizzaForm: React.FC<Props> = ({
                             Adding...
                         </div>
                     ) : (
-                        `Add to Cart for ${totalPrice} CZK`
+                        <span data-testid="product-price">`Add to Cart for ${totalPrice} CZK`</span>
                     )}
                 </button>
             </div>

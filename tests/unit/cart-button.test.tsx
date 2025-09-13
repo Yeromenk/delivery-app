@@ -57,7 +57,7 @@ describe('CartButton', () => {
 
     test('shows loading state when loading is true', () => {
         // Mock the Zustand selector pattern for loading state
-        mockUseCartStore.mockImplementation((selector: never) => {
+        mockUseCartStore.mockImplementation((selector: any) => {
             const state = {
                 totalAmount: 150,
                 items: [{ id: 1 }],

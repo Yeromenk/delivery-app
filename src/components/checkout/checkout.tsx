@@ -128,7 +128,7 @@ const Checkout = () => {
             <h1>Checkout</h1>
 
             <FormProvider {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form onSubmit={form.handleSubmit(onSubmit)} data-testid="checkout-form">
                     <div className="checkout-container">
                         <div className="checkout-main">
                             <div className="checkout-left">

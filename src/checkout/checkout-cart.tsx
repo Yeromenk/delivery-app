@@ -35,24 +35,27 @@ const CheckoutCart: React.FC<Props> = ({ items, removeCartItem, onClickCountButt
                         ))}
                     </div>
                 ) : (
-                    items.map((item) => (
-                        <CartItem
-                            id={item.id}
-                            key={item.id}
-                            name={item.name}
-                            details={getCartItemsDetails(
-                                item.ingredients,
-                                item.pizzaType as PizzaType,
-                                item.pizzaSize as PizzaSize,
-                            )}
-                            price={item.price}
-                            imageUrl={item.imageUrl}
-                            quantity={item.quantity}
-                            disabled={item.disabled}
-                            onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
-                            onClickRemove={() => removeCartItem(item.id)}
-                        />
-                    ))
+                    <div data-testid="order-items">
+                        {items.map((item) => (
+                            <div key={item.id} data-testid="order-item">
+                                <CartItem
+                                    id={item.id}
+                                    name={item.name}
+                                    details={getCartItemsDetails(
+                                        item.ingredients,
+                                        item.pizzaType as PizzaType,
+                                        item.pizzaSize as PizzaSize,
+                                    )}
+                                    price={item.price}
+                                    imageUrl={item.imageUrl}
+                                    quantity={item.quantity}
+                                    disabled={item.disabled}
+                                    onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                                    onClickRemove={() => removeCartItem(item.id)}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 )}
             </div>
         </div>

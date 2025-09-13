@@ -101,10 +101,11 @@ const SearchInput = () => {
                     onChange={handleInputChange}
                     onFocus={() => setFocused(true)}
                     placeholder="Search for products..."
+                    data-testid="search-input"
                 />
 
                 {focused && (
-                    <div className={`search-input-results ${focused ? 'search-input-results-active' : ''}`}>
+                    <div className={`search-input-results ${focused ? 'search-input-results-active' : ''}`} data-testid="search-results">
                         {loading && (
                             <div className="search-input-results-loading">
                                 Searching...
@@ -128,7 +129,8 @@ const SearchInput = () => {
                                 key={product.id}
                                 to={`/products/${product.id}`}
                                 className="search-input-results-content"
-                                onClick={handleResultClick}>
+                                onClick={handleResultClick}
+                                data-testid="search-result-item">
                                 <img
                                     alt={product.name}
                                     src={product.imageUrl}

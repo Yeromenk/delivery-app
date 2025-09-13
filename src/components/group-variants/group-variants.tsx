@@ -29,6 +29,7 @@ const GroupVariants: React.FC<Props> = ({
                     className={`group-variants-item ${
                         item.value === selectedValue ? 'active' : ''
                     } ${item.isDisabled ? 'disabled' : ''}`}
+                    data-testid="size-option"
                 >
                     {item.name}
                 </button>

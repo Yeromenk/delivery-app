@@ -51,13 +51,13 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
     return (
         <>
             {trigger}
-            {isOpen && <div className="cart-drawer-overlay" onClick={toggleDrawer} />}
-            <div className={`cart-drawer ${isOpen ? 'open' : ''}`}>
+            {isOpen && <div className="cart-drawer-overlay" onClick={toggleDrawer} data-testid="modal-overlay" />}
+            <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer">
                 <div className="cart-drawer-header">
                     <h2 className="cart-drawer-title">
                         In cart <span className="font-bold">{items.length} items</span>
                     </h2>
-                    <button onClick={toggleDrawer} className="cart-drawer-close">
+                    <button onClick={toggleDrawer} className="cart-drawer-close" data-testid="close-cart-drawer">
                         <X size={24} />
                     </button>
                 </div>
@@ -72,7 +72,7 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                             ))}
                         </div>
                     ) : !totalAmount ? (
-                        <div className="cart-drawer-empty">
+                        <div className="cart-drawer-empty" data-testid="empty-cart">
                             <img
                                 src="/images/empty-box.png"
                                 width={120}
@@ -90,7 +90,7 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                     ) : (
                         <div className="cart-drawer-body">
                             {items.map((item) => (
-                                <div className="cart-drawer-body-item" key={item.id}>
+                                <div className="cart-drawer-body-item" key={item.id} data-testid="cart-item">
                                     <CartDrawerItem
                                         id={item.id}
                                         imageUrl={item.imageUrl}
@@ -121,7 +121,7 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                             {isBusy ? (
                                 <span className="cart-total-skeleton" aria-hidden="true" />
                             ) : (
-                                <span className="cart-total-amount">{totalAmount} CZK</span>
+                                <span className="cart-total-amount" data-testid="cart-total-amount">{totalAmount} CZK</span>
                             )}
                         </div>
                         <Link to="/checkout" className="checkout-link">
@@ -133,6 +133,7 @@ const CartDrawer: React.FC<Props> = ({ children }) => {
                                 }}
                                 disabled={redirect || loading}
                                 aria-busy={redirect || loading}
+                                data-testid="checkout-button"
                             >
                                 <span>Checkout</span>
                                 {redirect || loading ? (

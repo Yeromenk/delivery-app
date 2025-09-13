@@ -8,19 +8,45 @@ A modern React + TypeScript application with a full e‑commerce flow: product c
 
 - Category‑based catalog (pizzas, snacks, drinks, desserts)
 - Filtering: ingredients, price range, sizes/types, sorting
-- Smooth cart updates with stable layout (no content jumps during async work)
+- Searching products by name
+- Product details with images, descriptions, ingredients
+- Shopping cart with add/remove, quantity updates, totals
 - Order placement with redirect to Stripe Checkout
 - Email notifications (Resend), consistent skeletons/spinners for loading
 - Responsive UI and polished interactions
 
 ---
 
-## Tech stack (with links)
+## Tech stack 
 
-- Frontend: [React 18](https://react.dev), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vite.dev), [React Router](https://reactrouter.com/), [Zustand](https://github.com/pmndrs/zustand), [React Hook Form](https://react-hook-form.com/), [PrimeReact](https://primereact.org), [Lucide Icons](https://lucide.dev)
-- Backend: [Node.js](https://nodejs.org/), [Express](https://expressjs.com/), [PostgreSQL](https://www.postgresql.org/), [Stripe](https://stripe.com/docs), [Resend](https://resend.com)
-- Styling: [CSS](https://developer.mozilla.org/docs/Web/CSS)
-- Dev tools: [ESLint](https://eslint.org), [TypeScript](https://www.typescriptlang.org/), [nodemon](https://nodemon.io), [ts-node](https://typestrong.org/ts-node/)
+- ## Frontend:
+- [React 18](https://react.dev), 
+- [TypeScript](https://www.typescriptlang.org/),
+- [Vite](https://vite.dev), 
+- [React Router](https://reactrouter.com/), 
+- [Zustand](https://github.com/pmndrs/zustand),
+- [React Hook Form](https://react-hook-form.com/),
+- [PrimeReact](https://primereact.org), 
+- [Lucide Icons](https://lucide.dev)
+- ## Backend: 
+- [Node.js](https://nodejs.org/), 
+- [Express](https://expressjs.com/),
+- [PostgreSQL](https://www.postgresql.org/),
+- [Stripe](https://stripe.com/docs), 
+- [Resend](https://resend.com)
+- ##  Styling:
+- [CSS](https://developer.mozilla.org/docs/Web/CSS)
+- ## Dev tools: 
+- [ESLint](https://eslint.org), 
+- [TypeScript](https://www.typescriptlang.org/), 
+- [nodemon](https://nodemon.io),
+- [ts-node](https://typestrong.org/ts-node/)
+- ## Testing:
+- [Jest](https://jestjs.io/),
+- [Cypress](https://www.cypress.io/),
+- ## Deployment:
+- [Docker](https://www.docker.com/),
+- [GitHub Actions](https:://github.com/features/actions)
 
 ---
 
@@ -95,7 +121,65 @@ Backend API: http://localhost:5000/api
 
 ---
 
-## TODO 
-1. отправка емайла при успешной регистрации
-2. посмотреть что можно улучшить или добавить
+## Testing
+
+This project includes comprehensive testing with unit tests, integration tests, and E2E tests.
+
+### Test Commands
+
+```bash
+# Run all unit tests
+npm run test:unit
+
+# Run integration tests
+npm run test:integration
+
+# Run E2E tests (requires manual server setup)
+npm run test:e2e
+
+# Run E2E tests with automatic server startup
+npm run test:e2e:full
+
+# Run all tests
+npm run test:all
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### CI/CD Pipeline
+
+The project includes a GitHub Actions CI/CD pipeline that:
+- Runs unit tests
+- Runs integration tests with PostgreSQL database
+- Builds the application
+- Runs E2E tests with Cypress
+- Builds Docker images for deployment
+
+### Docker Support
+
+Both frontend and backend are containerized with Docker:
+- Backend: Node.js with TypeScript compilation
+- Frontend: Nginx serving built React app
+- Database: PostgreSQL
+
+### Test Structure
+
+- `tests/unit/` - Unit tests for individual components and functions
+- `tests/integration/` - Integration tests for API endpoints
+- `tests/e2e/` - End-to-end tests with Cypress
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+cd back-end && npm install
+
+# Start development servers
+npm run dev  # Frontend
+cd back-end && npm run dev  # Backend
+```
+
+---
 

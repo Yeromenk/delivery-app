@@ -26,12 +26,19 @@ export const CountButton: React.FC<CountButtonProps> = ({
                 disabled={value === 1 || loading}
                 size={size}
                 type="minus"
+                data-testid="decrease-quantity"
             />
 
-            <b className={valueSizeClass}>{value}</b>
+            <b className={valueSizeClass} data-testid="item-quantity">{value}</b>
             {loading && <span className="count-inline-spinner" aria-hidden="true" />}
 
-            <CountIconButton onClick={() => onClick?.('plus')} size={size} type="plus" disabled={loading} />
+            <CountIconButton
+                onClick={() => onClick?.('plus')}
+                size={size}
+                type="plus"
+                disabled={loading}
+                data-testid="increase-quantity"
+            />
         </div>
     );
 };

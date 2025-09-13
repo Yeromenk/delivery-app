@@ -37,6 +37,7 @@ export const FormInput: React.FC<Props> = ({name, label, required, className, ..
                     {...props}
                     {...register(name)}
                     className={`form-input__field ${className || ''}`}
+                    data-testid={`${name}-input`}
                 />
 
                 {value && (
@@ -52,9 +53,9 @@ export const FormInput: React.FC<Props> = ({name, label, required, className, ..
             </div>
 
             {error && (
-                <div className='form-input__error'>
-                    <p className="form-input__error-text">{error}</p>
-                </div>
+                <p className="form-input__error" data-testid={`${name}-error`}>
+                    {error}
+                </p>
             )}
         </div>
     )

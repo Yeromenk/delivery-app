@@ -13,13 +13,13 @@ interface IProps {
 
 const Header: React.FC<IProps> = ({ hasSearch = true, hasCart = true }) => {
     return (
-        <header className="header">
+        <header className="header" data-testid="header">
             <div className="container">
 
                 {/*Left part*/}
                 <div className="left-header">
                     <Link to="/" className="logo-link" aria-label="Go to homepage">
-                        <img src={logo} width={35} height={35} alt="Pizza Delivery Logo" />
+                        <img src={logo} width={35} height={35} alt="Pizza Delivery Logo" data-testid="logo" />
                     </Link>
                     <Link to="/" className="brand-link" aria-label="Go to homepage">
                         <div>

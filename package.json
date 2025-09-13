@@ -11,9 +11,14 @@
     "test": "jest --config jest.config.root.json",
     "test:unit": "jest --config tests/jest.unit.config.json",
     "test:integration": "jest --config tests/jest.integration.config.json",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:e2e:headless": "cypress run --headless",
+    "test:e2e:full": "node scripts/test-e2e.js",
     "test:watch": "jest --config jest.config.root.json --watch",
     "test:coverage": "jest --config jest.config.root.json --coverage",
-    "test:ci": "jest --config jest.config.root.json --coverage --watchAll=false --ci"
+    "test:ci": "jest --config jest.config.root.json --coverage --watchAll=false --ci",
+    "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e:headless"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -48,6 +53,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@cypress/vite-dev-server": "^7.0.0",
     "@eslint/js": "^9.35.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
@@ -59,6 +65,7 @@
     "@types/react-dom": "^19.1.9",
     "@types/supertest": "^6.0.3",
     "@vitejs/plugin-react": "^5.0.2",
+    "cypress": "^15.2.0",
     "eslint": "^9.35.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

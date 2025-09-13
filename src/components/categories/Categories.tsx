@@ -24,13 +24,14 @@ const Categories = () => {
     return (
         <div className="categories-container">
             <h2 className="categories-title">Categories</h2>
-            <div className="categories">
+            <div className="categories" data-testid="categories">
                 {
                     cats.map(({name, id}, index) => (
                         <button
                             key={index}
                             onClick={() => handleCategoryClick(id, name)}
-                            className={`category-item ${categoryActiveId === id ? "active-category-item" : ""}`}>
+                            className={`category-item ${categoryActiveId === id ? "active-category-item" : ""}`}
+                            data-testid="category-item">
                             <span className="category-button">
                                 {name}
                             </span>

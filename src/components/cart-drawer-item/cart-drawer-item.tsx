@@ -41,6 +41,7 @@ const CartDrawerItem: React.FC<Props> = ({
                             size={16}
                             className="cart-drawer-item-delete-icon"
                             onClick={onClickRemove}
+                            data-testid="remove-item"
                         />
                     </div>
                 </div>

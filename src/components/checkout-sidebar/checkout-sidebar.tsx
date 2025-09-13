@@ -18,12 +18,12 @@ const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading }) => {
             <div className="white-block">
                 <h1>4. Payment</h1>
 
-                <div className="payment-summary">
+                <div className="payment-summary" data-testid="order-summary">
                     <h3>Overall:</h3>
                     {loading ? (
                         <Skeleton width="120px" height="2rem" />
                     ) : (
-                        <span className="total-price">{totalPrice} CZK</span>
+                        <span className="total-price" data-testid="total-amount">{totalPrice} CZK</span>
                     )}
                 </div>
 
@@ -49,7 +49,7 @@ const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading }) => {
                         </div>
                     } value={loading ? <Skeleton width="80px" height="1.25rem" /> : `${DELIVERY_PRICE} CZK`} />
 
-                    <button className="checkout-button" type="submit" disabled={loading} aria-busy={loading}>
+                    <button className="checkout-button" type="submit" disabled={loading} aria-busy={loading} data-testid="submit-order">
                         <span>Go to payment</span>
                         {loading ? (
                             <span className="checkout-spinner" aria-hidden="true" />
