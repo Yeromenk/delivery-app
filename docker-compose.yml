@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  database:
+    image: postgres:15-alpine
+    container_name: ye-pizza-db
+    environment:
+      POSTGRES_DB: ye-pizza
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Wsxokn0134
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./back-end/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - pizza-network
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: ye-pizza-backend
+    env_file:
+      - ./back-end/.env
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: ye-pizza
+      DB_USER: postgres
+      DB_PASSWORD: Wsxokn0134
+      PORT: 5000
+      FRONTEND_URL: http://localhost
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    networks:
+      - pizza-network
+    volumes:
+      - ./back-end:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: ye-pizza-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - pizza-network
+
+  # Adminer for database management
+  adminer:
+    image: adminer
+    container_name: ye-pizza-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - pizza-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  pizza-network:
+    driver: bridge

@@ -1,0 +1,35 @@
+# Use the official Node.js 20 image
+FROM node:20-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json
+COPY back-end/package*.json ./
+
+# Install ALL dependencies (including dev for build)
+RUN npm install
+
+# Install TypeScript globally
+RUN npm install -g typescript ts-node
+
+# Copy backend source code
+COPY back-end/ ./
+
+# Compile TypeScript
+RUN npm run build
+
+# Expose port 5000
+EXPOSE 5000
+
+# Create a startup script that seeds the DB first, then starts the server
+RUN echo '#!/bin/bash\n\
+    echo "Waiting for database to be ready..."\n\
+    sleep 10\n\
+    echo "Running database seed..."\n\
+    npm run seed || echo "Seed failed or already exists"\n\
+    echo "Starting server..."\n\
+    npm run dev' > /app/start.sh && chmod +x /app/start.sh
+
+# Command to run the application
+CMD ["/bin/bash", "/app/start.sh"]
