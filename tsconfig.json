@@ -6,6 +6,9 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "jsx": "react-jsx"
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   }
 }
