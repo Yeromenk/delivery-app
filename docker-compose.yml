@@ -6,9 +6,9 @@ services:
     image: postgres:15-alpine
     container_name: ye-pizza-db
     environment:
-      POSTGRES_DB: ye-pizza
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Wsxokn0134
+      POSTGRES_DB: ${DB_NAME:-ye-pizza}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -28,9 +28,9 @@ services:
     environment:
       DB_HOST: database
       DB_PORT: 5432
-      DB_NAME: ye-pizza
-      DB_USER: postgres
-      DB_PASSWORD: Wsxokn0134
+      DB_NAME: ${DB_NAME:-ye-pizza}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD}
       PORT: 5000
       FRONTEND_URL: http://localhost
     ports:
