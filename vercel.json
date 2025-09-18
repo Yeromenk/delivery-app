@@ -1,0 +1,26 @@
+{
+  "builds": [
+    {
+      "src": "back-end/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/back-end/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "back-end/server.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
