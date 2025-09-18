@@ -14,7 +14,8 @@
     "dev": "nodemon --exec ts-node server.ts",
     "build": "tsc",
     "create-schema": "ts-node -e \"import('./database/db').then(db => import('fs').then(fs => db.default.query(fs.readFileSync('./database/schema.sql', 'utf8')).then(() => console.log('Schema created')).catch(console.error)))\"",
-    "seed": "ts-node ./database/seed.ts"
+    "seed": "ts-node ./database/seed.ts",
+    "setup-neon": "ts-node ./database/setup-neon.ts"
   },
   "dependencies": {
     "@react-email/render": "^1.2.3",
