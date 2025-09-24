@@ -3,7 +3,21 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
+// Prefer a single connection string when available (e.g., Neon)
+const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+
+let pool: Pool;
+
+if (connectionString) {
+  pool = new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 60000,
+    idleTimeoutMillis: 30000,
+    max: 20,
+  });
+} else {
+  pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
@@ -13,6 +27,7 @@ const pool = new Pool({
     connectionTimeoutMillis: 60000,
     idleTimeoutMillis: 30000,
     max: 20,
-});
+  });
+}
 
 export default pool;
